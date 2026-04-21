@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:8.0
+    container_name: salekit-mongo
+    restart: unless-stopped
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-root}
+    volumes:
+      - salekit-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    container_name: salekit-mongo-express
+    restart: unless-stopped
+    ports:
+      - "${ME_PORT:-8081}:8081"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER:-root}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASS:-root}
+      ME_CONFIG_MONGODB_URL: ${MONGO_URI:-mongodb://root:root@mongo:27017/}
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_BASICAUTH_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_BASICAUTH_PASS:-pass}
+
+volumes:
+  salekit-mongo-data:
+    name: salekit-mongo-data

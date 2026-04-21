@@ -1,0 +1,11 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# Whitelist packages whose postinstall scripts we trust to run.
+# pnpm v10 blocks all build scripts by default for security.
+# Committed to repo so every teammate's install is deterministic.
+onlyBuiltDependencies:
+  - esbuild
+  - "@nestjs/core"
+  - "@biomejs/biome"

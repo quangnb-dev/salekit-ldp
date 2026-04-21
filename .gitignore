@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.local
+coverage/
+.turbo/
+logs/*.log
+apps/api/logs/*.log
+apps/api/logs/*.json
+apps/web/*.log
+.DS_Store
+.vscode/
+!.vscode/extensions.json

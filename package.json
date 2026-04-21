@@ -1,0 +1,44 @@
+{
+  "name": "salekit-ldp",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "scripts": {
+    "build": "pnpm --filter @salekit/core build && pnpm --filter api build && pnpm --filter web build",
+    "predev": "pnpm --filter @salekit/core build && docker compose up -d",
+    "dev": "concurrently -n core,api,web -c blue,green,magenta --kill-others-on-fail \"pnpm dev:core\" \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev:core": "pnpm --filter @salekit/core dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev:web": "pnpm --filter web dev",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "setup": "pnpm install && pnpm --filter @salekit/core build && pnpm docker:up",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "~2.4",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "concurrently": "^9",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "tsx": "~4",
+    "typescript": "~5.8"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "biome check --write --no-errors-on-unmatched",
+      "biome format --write --no-errors-on-unmatched"
+    ],
+    "*.{json,md}": [
+      "biome format --write --no-errors-on-unmatched"
+    ]
+  }
+}

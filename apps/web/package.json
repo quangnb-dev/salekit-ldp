@@ -1,0 +1,38 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@salekit/core": "workspace:*",
+    "ace-builds": "^1.43.6",
+    "axios": "^1",
+    "lucide-react": "^0.469.0",
+    "react": "^19.2",
+    "react-ace": "^14.0.1",
+    "react-best-gradient-color-picker": "^3.0.14",
+    "react-dom": "^19.2",
+    "react-router": "^7",
+    "zustand": "^5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@testing-library/react": "^16",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "4.7.0",
+    "jsdom": "^25",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.8",
+    "vite": "^7.3",
+    "vitest": "^4.1"
+  }
+}
