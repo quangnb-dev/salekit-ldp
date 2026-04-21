@@ -25,12 +25,18 @@
   },
   "dependencies": {
     "immer": "^10",
+    "interactjs": "^1.10.27",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "use-sync-external-store": "^1.6.0",
     "zod": "^4",
     "zundo": "^2",
     "zustand": "^5"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "tsup": "^8.5",
     "typescript": "~5.8",
     "vitest": "^4.1"

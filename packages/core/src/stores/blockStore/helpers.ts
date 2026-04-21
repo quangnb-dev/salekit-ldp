@@ -1,16 +1,12 @@
 import type {
   SK_BlockData,
-  SK_BlockDevice,
   SK_BlockStructure,
 } from "../../types";
-import { generateId } from "../../utils";
 import type { BlockState } from "./types";
 
 export type ConfigObject = Record<string, unknown>;
 export type BlockMap = Record<string, SK_BlockData>;
 export type HierarchyMap = Record<string, string[]>;
-
-const DEVICE_KEYS: SK_BlockDevice[] = ["desktop", "tablet", "mobile"];
 
 export const isPlainObject = (value: unknown): value is ConfigObject =>
   typeof value === "object" && value !== null && !Array.isArray(value);
@@ -75,46 +71,6 @@ export const updateProperties = (
   setNestedValue(targetObj, path, value);
 };
 
-export const createUniqueBlockId = (
-  blocksData: Record<string, SK_BlockData>,
-): string => {
-  let nextId = generateId("block");
-
-  while (blocksData[nextId]) {
-    nextId = generateId("block");
-  }
-
-  return nextId;
-};
-
-export const createDefaultSectionBlock = (
-  newSectionId: string,
-): SK_BlockData => ({
-  id: newSectionId,
-  type: "section",
-  cname: "section",
-  label: "Section",
-  bpConfigs: {
-    desktop: {},
-    tablet: {},
-    mobile: {},
-  },
-  configs: {},
-});
-
-export const createDefaultPopupBlock = (newPopupId: string): SK_BlockData => ({
-  id: newPopupId,
-  type: "popup",
-  cname: "popup",
-  label: "Popup",
-  bpConfigs: {
-    desktop: {},
-    tablet: {},
-    mobile: {},
-  },
-  configs: {},
-});
-
 export const getActiveData = (
   state: BlockState,
   isPopupEditMode?: boolean,
@@ -137,35 +93,10 @@ export const mergeStructure = (
   });
 };
 
-export const cloneBlockWithId = (
-  blockData: SK_BlockData,
-  newId: string,
-): SK_BlockData => {
-  const clonedData = JSON.parse(JSON.stringify(blockData)) as SK_BlockData;
-  clonedData.id = newId;
-  return clonedData;
-};
-
-export const applyPositionOffset = (blockData: SK_BlockData): void => {
-  DEVICE_KEYS.forEach((device) => {
-    const deviceConfig = blockData.bpConfigs[device];
-
-    if (!isPlainObject(deviceConfig)) {
-      return;
-    }
-
-    (["top", "left"] as const).forEach((positionKey) => {
-      const positionConfig = deviceConfig[positionKey];
-      if (!isPlainObject(positionConfig)) {
-        return;
-      }
-
-      const rawValue = positionConfig.val;
-      const parsedValue = Number(rawValue);
-
-      if (!Number.isNaN(parsedValue)) {
-        positionConfig.val = `${parsedValue + 10}`;
-      }
-    });
-  });
-};
+export {
+  applyPositionOffset,
+  cloneBlockWithId,
+  createDefaultPopupBlock,
+  createDefaultSectionBlock,
+  createUniqueBlockId,
+} from "../../lib/builder";
