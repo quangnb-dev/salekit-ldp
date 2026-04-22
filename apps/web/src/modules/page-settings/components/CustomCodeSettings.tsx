@@ -1,3 +1,4 @@
+import type { FC } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-css";
@@ -5,7 +6,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import { usePageSettings } from "../hooks/usePageSettings";
 
-export default function CustomCodeSettings() {
+export const CustomCodeSettings: FC = () => {
   const { settings, setSetting } = usePageSettings();
 
   const editorProps = {
@@ -52,4 +53,4 @@ export default function CustomCodeSettings() {
       </div>
     </div>
   );
-}
+};

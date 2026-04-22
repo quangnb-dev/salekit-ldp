@@ -1,38 +1,37 @@
-import { createAbsoluteBpConfigs } from "@salekit/core";
+import { createAbsoluteBpConfigs, type SK_BlockToolbar } from "@salekit/core";
 
-/**
- * Default bpConfigs preset for a new button block.
- */
-export const blockPreset = {
-  desktop: {
-    ...createAbsoluteBpConfigs(40).desktop,
-    width: { val: "120", unit: "px" as const },
-    height: { val: "40", unit: "px" as const },
-  },
-  tablet: {
-    ...createAbsoluteBpConfigs(40).tablet,
-    width: { val: "120", unit: "px" as const },
-    height: { val: "40", unit: "px" as const },
-  },
-  mobile: {
-    ...createAbsoluteBpConfigs(40).mobile,
-    width: { val: "100", unit: "px" as const },
-    height: { val: "36", unit: "px" as const },
-  },
-};
+const basePreset = createAbsoluteBpConfigs(40);
 
-/**
- * Overlay dimensions used by BlockToolbar during drag.
- */
-export const overlayConfig = {
-  desktop: { width: 120, height: 40 },
-  tablet: { width: 120, height: 40 },
-  mobile: { width: 100, height: 36 },
-};
-
-/**
- * Default configs field for a newly created button block.
- */
-export const blockDefaults = {
-  content: { text: "Click Me" },
-};
+export const buttonToolbarPresets: SK_BlockToolbar[] = [
+  {
+    id: "button-default",
+    type: "button",
+    cname: "button",
+    label: "Nut bam",
+    bpConfigs: {
+      desktop: {
+        ...basePreset.desktop,
+        width: { val: "120", unit: "px" as const },
+        height: { val: "40", unit: "px" as const },
+      },
+      tablet: {
+        ...basePreset.tablet,
+        width: { val: "120", unit: "px" as const },
+        height: { val: "40", unit: "px" as const },
+      },
+      mobile: {
+        ...basePreset.mobile,
+        width: { val: "100", unit: "px" as const },
+        height: { val: "36", unit: "px" as const },
+      },
+    },
+    configs: {
+      content: { text: "Click Me" },
+    },
+    overlay: {
+      desktop: { width: 120, height: 40 },
+      tablet: { width: 120, height: 40 },
+      mobile: { width: 100, height: 36 },
+    },
+  },
+];

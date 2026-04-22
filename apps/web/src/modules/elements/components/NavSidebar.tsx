@@ -1,3 +1,4 @@
+import type { FC } from "react";
 import { classNames } from "@/shared/lib/classNames";
 import type { BlockLibraryCategoryId, BlockLibraryNavItem } from "../types/nav";
 
@@ -8,15 +9,17 @@ type NavSidebarProps = {
   onNavClick: (id: BlockLibraryCategoryId) => void;
 };
 
-function NavButton({
-  item,
-  isActive,
-  onClick,
-}: {
+type NavButtonProps = {
   item: BlockLibraryNavItem;
   isActive: boolean;
   onClick: () => void;
-}) {
+};
+
+export const NavButton: FC<NavButtonProps> = ({
+  item,
+  isActive,
+  onClick,
+}: NavButtonProps) => {
   const Icon = item.icon;
 
   return (
@@ -35,14 +38,14 @@ function NavButton({
       <span className="truncate">{item.label}</span>
     </button>
   );
-}
+};
 
-export default function NavSidebar({
+export const NavSidebar: FC<NavSidebarProps> = ({
   activeNav,
   topNav,
   bottomNav,
   onNavClick,
-}: NavSidebarProps) {
+}: NavSidebarProps) => {
   return (
     <aside className="block-menu-list-scrollbar relative hidden min-h-0 flex-col overflow-y-auto bg-white p-2 md:flex md:after:absolute md:after:bottom-2 md:after:right-0 md:after:top-2 md:after:w-px md:after:bg-slate-100">
       <nav className="space-y-1 px-1.5">
@@ -70,4 +73,4 @@ export default function NavSidebar({
       </nav>
     </aside>
   );
-}
+};

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
 
 type FieldRowProps = {
@@ -9,13 +9,13 @@ type FieldRowProps = {
   contentClassName?: string;
 };
 
-export default function FieldRow({
+export const FieldRow: FC<FieldRowProps> = ({
   label,
   children,
   className,
   labelClassName,
   contentClassName,
-}: FieldRowProps) {
+}: FieldRowProps) => {
   return (
     <div className={classNames("flex items-center gap-3", className)}>
       <span
@@ -29,4 +29,4 @@ export default function FieldRow({
       <div className={classNames("flex-1", contentClassName)}>{children}</div>
     </div>
   );
-}
+};

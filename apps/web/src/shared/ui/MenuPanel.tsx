@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
 
 type MenuPanelProps = {
@@ -6,7 +6,10 @@ type MenuPanelProps = {
   className?: string;
 };
 
-export default function MenuPanel({ children, className }: MenuPanelProps) {
+export const MenuPanel: FC<MenuPanelProps> = ({
+  children,
+  className,
+}: MenuPanelProps) => {
   return (
     <div
       className={classNames(
@@ -17,4 +20,4 @@ export default function MenuPanel({ children, className }: MenuPanelProps) {
       {children}
     </div>
   );
-}
+};

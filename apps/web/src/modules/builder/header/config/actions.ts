@@ -3,7 +3,6 @@ import {
   Layers,
   LayoutTemplate,
   Menu,
-  PictureInPicture2,
   Plus,
   Redo2,
   Save,
@@ -14,36 +13,35 @@ import {
 import type { LeftHeaderAction, RightHeaderAction } from "../types/action";
 
 export const LEFT_HEADER_ACTIONS: LeftHeaderAction[] = [
-  { id: "all", title: "Thêm mới", icon: Plus, variant: "text" },
+  { id: "all", title: "Them moi", icon: Plus, variant: "text" },
   { id: "section", title: "Section", icon: LayoutTemplate, variant: "icon" },
-  { id: "popup", title: "Popup", icon: PictureInPicture2, variant: "icon" },
   { id: "layer", title: "Layer", icon: Layers, variant: "icon" },
-  { id: "settings", title: "Cài đặt", icon: Settings, variant: "icon" },
+  { id: "settings", title: "Cai dat", icon: Settings, variant: "icon" },
 ];
 
 export const RIGHT_HEADER_ACTIONS: RightHeaderAction[] = [
-  { id: "undo", title: "Hoàn tác", icon: Undo2, variant: "icon" },
-  { id: "redo", title: "Làm lại", icon: Redo2, variant: "icon" },
+  { id: "undo", title: "Hoan tac", icon: Undo2, variant: "icon" },
+  { id: "redo", title: "Lam lai", icon: Redo2, variant: "icon" },
   {
     id: "save",
-    title: "Lưu",
-    label: "Lưu",
+    title: "Luu",
+    label: "Luu",
     icon: Save,
     variant: "ghost",
     className: "text-slate-600 hover:bg-white hover:text-slate-900",
   },
   {
     id: "preview",
-    title: "Xem trước",
-    label: "Xem trước",
+    title: "Xem truoc",
+    label: "Xem truoc",
     icon: Eye,
     variant: "ghost",
     className: "text-slate-700 hover:bg-white hover:text-slate-900",
   },
   {
     id: "publish",
-    title: "Xuất bản",
-    label: "Xuất bản",
+    title: "Xuat ban",
+    label: "Xuat ban",
     icon: Upload,
     variant: "primary",
   },

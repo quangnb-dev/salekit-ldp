@@ -1,7 +1,8 @@
-import ToggleRow from "@/shared/ui/ToggleRow";
+import type { FC } from "react";
+import { ToggleRow } from "@/shared/ui/ToggleRow";
 import { usePageSettings } from "../hooks/usePageSettings";
 
-export default function GridSettings() {
+export const GridSettings: FC = () => {
   const { settings, setSetting } = usePageSettings();
 
   return (
@@ -9,13 +10,17 @@ export default function GridSettings() {
       <ToggleRow
         label="Hiển thị lưới trên canvas"
         checked={settings.showGrid}
-        onChange={(event) => setSetting("showGrid", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("showGrid", event.target.checked)
+        }
       />
       <ToggleRow
         label="Snap vào lưới"
         checked={settings.snapToGrid}
-        onChange={(event) => setSetting("snapToGrid", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("snapToGrid", event.target.checked)
+        }
       />
     </div>
   );
-}
+};

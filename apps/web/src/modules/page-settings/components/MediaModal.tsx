@@ -1,11 +1,13 @@
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 
 type MediaModalProps = {
   onClose: () => void;
 };
 
-export default function MediaModal({ onClose }: MediaModalProps) {
+export const MediaModal: FC<MediaModalProps> = ({
+  onClose,
+}: MediaModalProps) => {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
@@ -59,4 +61,4 @@ export default function MediaModal({ onClose }: MediaModalProps) {
       </div>
     </div>
   );
-}
+};

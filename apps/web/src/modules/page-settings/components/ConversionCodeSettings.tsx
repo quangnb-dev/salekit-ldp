@@ -1,15 +1,18 @@
+import type { FC } from "react";
 import { Input } from "@/shared/ui/Input";
 import { usePageSettings } from "../hooks/usePageSettings";
 
-function Toggle({
-  label,
-  checked,
-  onChange,
-}: {
+type ToggleProps = {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
-}) {
+};
+
+export const Toggle: FC<ToggleProps> = ({
+  label,
+  checked,
+  onChange,
+}: ToggleProps) => {
   return (
     <label className="flex items-center gap-2 cursor-pointer">
       <span className="text-sm text-slate-700">{label}</span>
@@ -25,9 +28,9 @@ function Toggle({
       </div>
     </label>
   );
-}
+};
 
-export default function ConversionCodeSettings() {
+export const ConversionCodeSettings: FC = () => {
   const { settings, setSetting } = usePageSettings();
 
   return (
@@ -101,4 +104,4 @@ export default function ConversionCodeSettings() {
       />
     </div>
   );
-}
+};

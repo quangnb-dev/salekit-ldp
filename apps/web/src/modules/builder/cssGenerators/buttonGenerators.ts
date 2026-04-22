@@ -1,10 +1,10 @@
-import type { Generator } from "@salekit/core";
+import type { Generator } from "../cssRuntime";
 import {
   generateAbsoluteBaseCss,
   generateBackgroundCss,
   generateBorderCss,
   generateTextCss,
-} from "@salekit/core";
+} from "../cssRuntime";
 
 export const buttonGenerators: Generator[] = [
   {

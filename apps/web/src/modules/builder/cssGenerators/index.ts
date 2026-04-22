@@ -1,4 +1,6 @@
-import type { Generator, SK_BlockType } from "@salekit/core";
+import type { SK_BlockType } from "@salekit/core";
+
+import type { Generator } from "../cssRuntime";
 import { buttonGenerators } from "./buttonGenerators";
 import { imageGenerators } from "./imageGenerators";
 import { pageGenerators } from "./pageGenerators";

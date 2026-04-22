@@ -50,14 +50,6 @@ export const BlockRenderer: FC<BlockRendererProps> = memo(({ blockId }) => {
     return blockData.cname ? views[blockData.cname] : null;
   }, [views, blockData.cname]);
 
-  const _childrenIdsKey = blockData.childrenIds.join(",");
-  const childComponents = useMemo(() => {
-    return blockData.childrenIds.map((childId) => (
-      <BlockRenderer key={childId} blockId={childId} />
-    ));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockData.childrenIds.map]);
-
   if (!Component || !blockData.cname) return null;
 
   return (
@@ -70,7 +62,9 @@ export const BlockRenderer: FC<BlockRendererProps> = memo(({ blockId }) => {
       bpConfigs={blockData.bpConfigs}
       configs={blockData.configs}
     >
-      {childComponents}
+      {blockData.childrenIds.map((childId) => (
+        <BlockRenderer key={childId} blockId={childId} />
+      ))}
     </Component>
   );
 });

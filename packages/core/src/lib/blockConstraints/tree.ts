@@ -1,5 +1,6 @@
 import type { BlockOptionData } from "../../stores/blockStore";
 import type { SK_BlockData } from "../../types";
+import { getBlockSchema } from "../blockSchemas";
 
 type BlocksMap = Record<string, SK_BlockData>;
 type HierarchyMap = Record<string, string[]>;
@@ -30,7 +31,10 @@ export const isParentChildRelationValid = (
   if (parentData.id === childData.id) {
     return false;
   }
-  return true;
+
+  return getBlockSchema(parentData.type).allowedChildren.includes(
+    childData.type,
+  );
 };
 
 export const isOptionDataPlacementValid = (

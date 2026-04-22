@@ -1,6 +1,11 @@
+import type { FC } from "react";
 import type { BlockLibraryItem } from "../types/menu";
 
-export function SelectedItemHeader({ item }: { item: BlockLibraryItem }) {
+export const SelectedItemHeader: FC<{ item: BlockLibraryItem }> = ({
+  item,
+}: {
+  item: BlockLibraryItem;
+}) => {
   const Icon = item.icon;
 
   return (
@@ -12,4 +17,4 @@ export function SelectedItemHeader({ item }: { item: BlockLibraryItem }) {
       </div>
     </div>
   );
-}
+};

@@ -1,5 +1,5 @@
-export { default as ButtonPreview } from "./ButtonPreview";
-export { default as DefaultPreview } from "./DefaultPreview";
-export { default as DividerPreview } from "./DividerPreview";
-export { default as ImagePreview } from "./ImagePreview";
-export { default as TextPreview } from "./TextPreview";
+export { ButtonPreview } from "./ButtonPreview";
+export { DefaultPreview } from "./DefaultPreview";
+export { DividerPreview } from "./DividerPreview";
+export { ImagePreview } from "./ImagePreview";
+export { TextPreview } from "./TextPreview";

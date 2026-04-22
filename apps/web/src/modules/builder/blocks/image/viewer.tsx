@@ -1,4 +1,5 @@
 import { BlockViewer } from "@salekit/core";
+import type { FC } from "react";
 
 type ImageViewerProps = {
   blockId: string;
@@ -13,11 +14,11 @@ type ImageViewerProps = {
  * Image block viewer.
  * Renders an <img> if url is set; otherwise shows a placeholder div.
  */
-export default function ImageViewer({
+export const ImageViewer: FC<ImageViewerProps> = ({
   autoId,
   cname,
   configs,
-}: ImageViewerProps) {
+}: ImageViewerProps) => {
   const url = configs?.url as string | undefined;
   const alt = (configs?.alt as string | undefined) ?? "Image";
 
@@ -55,4 +56,4 @@ export default function ImageViewer({
       )}
     </BlockViewer>
   );
-}
+};

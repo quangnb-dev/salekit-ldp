@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { type FC, useEffect, useMemo, useState } from "react";
 import {
   LEFT_NAV_ITEMS,
   NAV_ITEMS_MAP,
@@ -8,22 +8,20 @@ import {
 import type { BlockLibraryItem } from "../types/menu";
 import type { BlockLibraryCategoryId } from "../types/nav";
 import type { BlockLibraryTab } from "../types/tab";
-import BlockMenuList from "./BlockMenuList";
-import NavSidebar from "./NavSidebar";
+import { BlockMenuList } from "./BlockMenuList";
+import { NavSidebar } from "./NavSidebar";
 import { SelectedItemHeader } from "./SelectedItemHeader";
 import { SelectedItemPreview } from "./SelectedItemPreview";
 
 type BlockLibraryPanelProps = {
   menuView: BlockLibraryTab;
-  onSelect: (type: string) => void;
   onViewChange: (view: BlockLibraryTab) => void;
 };
 
-export default function BlockLibraryPanel({
+export const BlockLibraryPanel: FC<BlockLibraryPanelProps> = ({
   menuView,
-  onSelect,
   onViewChange,
-}: BlockLibraryPanelProps) {
+}: BlockLibraryPanelProps) => {
   const [activeNav, setActiveNav] = useState<BlockLibraryCategoryId>(
     TAB_TO_NAV[menuView],
   );
@@ -79,12 +77,11 @@ export default function BlockLibraryPanel({
               items={items}
               selectedType={selectedType}
               onSelectItem={setSelectedType}
-              onAddItem={onSelect}
             />
           </div>
         </section>
 
-        <section className="hidden min-h-0 flex-col bg-white md:flex">
+        <section className="flex min-h-0 flex-col border-t border-slate-100 bg-white md:border-t-0">
           <div className="px-5 pb-3 pt-4">
             {selectedItem ? (
               <SelectedItemHeader item={selectedItem} />
@@ -108,4 +105,4 @@ export default function BlockLibraryPanel({
       </div>
     </div>
   );
-}
+};

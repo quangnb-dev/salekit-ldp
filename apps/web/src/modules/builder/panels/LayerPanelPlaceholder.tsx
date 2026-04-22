@@ -1,19 +1,20 @@
+import type { FC } from "react";
 import type { BuilderMenuPanel } from "@/modules/builder/stores/builderStore";
-import MenuPanel from "@/shared/ui/MenuPanel";
-import PanelHeader from "@/shared/ui/PanelHeader";
+import { MenuPanel } from "@/shared/ui/MenuPanel";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
 
 type LayerPanelPlaceholderProps = {
   menuView: Extract<BuilderMenuPanel, "layer">;
 };
 
-const LAYER_PANEL = {
+export const LAYER_PANEL = {
   title: "Layers",
   description: "Quản lý thứ tự và cấu trúc các block trên trang.",
 };
 
-export default function LayerPanelPlaceholder({
+export const LayerPanelPlaceholder: FC<LayerPanelPlaceholderProps> = ({
   menuView,
-}: LayerPanelPlaceholderProps) {
+}: LayerPanelPlaceholderProps) => {
   if (menuView !== "layer") return null;
 
   return (
@@ -34,4 +35,4 @@ export default function LayerPanelPlaceholder({
       </div>
     </MenuPanel>
   );
-}
+};

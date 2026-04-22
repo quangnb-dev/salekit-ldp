@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { type FC, useState } from "react";
 import { Input, Textarea } from "@/shared/ui/Input";
 import { usePageSettings } from "../hooks/usePageSettings";
-import MediaModal from "./MediaModal";
+import { MediaModal } from "./MediaModal";
 
-function Toggle({
-  label,
-  checked,
-  onChange,
-}: {
+type ToggleProps = {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
-}) {
+};
+
+export const Toggle: FC<ToggleProps> = ({
+  label,
+  checked,
+  onChange,
+}: ToggleProps) => {
   return (
     <label className="flex items-center gap-2 cursor-pointer">
       <div className="relative">
@@ -27,9 +29,9 @@ function Toggle({
       <span className="text-sm text-slate-700">{label}</span>
     </label>
   );
-}
+};
 
-export default function SeoSocialSettings() {
+export const SeoSocialSettings: FC = () => {
   const { settings, setSetting } = usePageSettings();
   const [mediaModalOpen, setMediaModalOpen] = useState(false);
 
@@ -146,4 +148,4 @@ export default function SeoSocialSettings() {
       )}
     </>
   );
-}
+};

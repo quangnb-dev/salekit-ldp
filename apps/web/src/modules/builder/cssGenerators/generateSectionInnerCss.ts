@@ -1,21 +1,38 @@
-import type { Breakpoint, CSSProperties, SK_BlockData } from "@salekit/core";
-import { getResponsiveValue } from "@salekit/core";
+import type { SK_BlockData } from "@salekit/core";
 
-/**
- * Generate CSS for section inner div width
- */
+import type { Breakpoint, CSSProperties } from "../cssRuntime";
+import { getResponsiveValue } from "../cssRuntime";
+
+type ConfigValue = {
+  val?: string | number;
+  unit?: string;
+};
+
+type SectionInnerCssConfig = Record<string, unknown> & {
+  innerWidth?: string | number | ConfigValue;
+  height?: ConfigValue;
+};
+
 export function generateSectionInnerCss(
   blockData: SK_BlockData,
   breakpoint: Breakpoint,
 ): CSSProperties {
-  const bpConfig = getResponsiveValue<Record<string, unknown>>(
+  const bpConfig = getResponsiveValue<SectionInnerCssConfig>(
     blockData.bpConfigs,
     breakpoint,
   );
 
   const css: CSSProperties = {};
 
-  // Inner width
+  // min-height so empty sections are visible
+  if (bpConfig.height?.val !== undefined) {
+    const unit = bpConfig.height.unit || "px";
+    css.minHeight = `${bpConfig.height.val}${unit}`;
+  } else {
+    css.minHeight = "320px";
+  }
+
+  // Fixed inner width, centered via margin: 0 auto (set in SectionViewer inline style)
   if (bpConfig.innerWidth !== undefined) {
     if (
       typeof bpConfig.innerWidth === "object" &&
@@ -27,7 +44,7 @@ export function generateSectionInnerCss(
       css.width = String(bpConfig.innerWidth);
     }
   } else {
-    css.width = "100%";
+    css.width = "1200px";
   }
 
   return css;

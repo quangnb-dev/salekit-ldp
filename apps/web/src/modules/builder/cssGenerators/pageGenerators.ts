@@ -1,13 +1,13 @@
-import type { Generator } from "@salekit/core";
-import { generateAbsoluteBaseCss, generateBackgroundCss } from "@salekit/core";
+import type { CSSProperties, Generator } from "../cssRuntime";
 
 export const pageGenerators: Generator[] = [
   {
     selector: "",
-    generator: generateAbsoluteBaseCss,
-  },
-  {
-    selector: "",
-    generator: generateBackgroundCss,
+    generator: () => {
+      return {
+        position: "unset" as CSSProperties["position"],
+        background: "#ccc",
+      };
+    },
   },
 ];

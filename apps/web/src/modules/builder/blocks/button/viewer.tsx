@@ -1,4 +1,5 @@
 import { BlockViewer } from "@salekit/core";
+import type { FC } from "react";
 
 type ButtonViewerProps = {
   blockId: string;
@@ -15,12 +16,12 @@ type ButtonContent = { text?: string };
  * Button block viewer.
  * Renders a styled button element inside BlockViewer.
  */
-export default function ButtonViewer({
+export const ButtonViewer: FC<ButtonViewerProps> = ({
   autoId,
   cname,
   label,
   configs,
-}: ButtonViewerProps) {
+}: ButtonViewerProps) => {
   const content = configs?.content as ButtonContent | undefined;
   const text = content?.text ?? label ?? "Button";
 
@@ -45,4 +46,4 @@ export default function ButtonViewer({
       </button>
     </BlockViewer>
   );
-}
+};

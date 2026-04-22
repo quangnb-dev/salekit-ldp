@@ -1,23 +1,20 @@
-import type { ReactNode } from "react";
+import { type SK_BlockViewer, SK_DATA_SET_ATTRS } from "@salekit/core";
+import type { FC, PropsWithChildren } from "react";
 
-type PageViewerProps = {
-  children?: ReactNode;
-};
-
-/**
- * Page viewer component.
- * Renders the page drop zone with position: relative and data-sk-drop="true"
- * so useBlockDrop picks it up as the drop target.
- * Does NOT use <BlockViewer> — the page block is not selectable/draggable.
- * Children are injected by BlockRenderer's recursive rendering.
- */
-export default function PageViewer({ children }: PageViewerProps) {
+export const PageViewer: FC<PropsWithChildren<SK_BlockViewer>> = ({
+  children,
+  autoId,
+  cname,
+}) => {
   return (
     <div
-      data-sk-drop="true"
-      style={{ position: "relative", minHeight: "100vh" }}
+      {...{
+        [SK_DATA_SET_ATTRS.AUTO_ID]: autoId,
+        [SK_DATA_SET_ATTRS.CNAME]: cname,
+        [SK_DATA_SET_ATTRS.CLICKABLE]: "false ",
+      }}
     >
       {children}
     </div>
   );
-}
+};

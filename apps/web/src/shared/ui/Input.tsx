@@ -1,4 +1,5 @@
 import type {
+  FC,
   InputHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
@@ -22,23 +23,30 @@ type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   className?: string;
 };
 
-export function Input({ className, ...props }: InputProps) {
+export const Input: FC<InputProps> = ({ className, ...props }: InputProps) => {
   return <input className={classNames(baseClass, className)} {...props} />;
-}
+};
 
-export function Textarea({ className, ...props }: TextareaProps) {
+export const Textarea: FC<TextareaProps> = ({
+  className,
+  ...props
+}: TextareaProps) => {
   return (
     <textarea
       className={classNames(baseClass, "resize-none", className)}
       {...props}
     />
   );
-}
+};
 
-export function Select({ children, className, ...props }: SelectProps) {
+export const Select: FC<SelectProps> = ({
+  children,
+  className,
+  ...props
+}: SelectProps) => {
   return (
     <select className={classNames(baseClass, className)} {...props}>
       {children}
     </select>
   );
-}
+};

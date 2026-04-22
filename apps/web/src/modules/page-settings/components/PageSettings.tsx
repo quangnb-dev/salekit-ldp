@@ -1,10 +1,11 @@
-import FieldRow from "@/shared/ui/FieldRow";
+import type { FC } from "react";
+import { FieldRow } from "@/shared/ui/FieldRow";
 import { Select } from "@/shared/ui/Input";
-import SwitchToggle from "@/shared/ui/SwitchToggle";
+import { SwitchToggle } from "@/shared/ui/SwitchToggle";
 import { usePageSettings } from "../hooks/usePageSettings";
-import PageSettingsBackgroundSection from "./PageSettingsBackgroundSection";
+import { PageSettingsBackgroundSection } from "./PageSettingsBackgroundSection";
 
-const FONT_OPTIONS = ["Roboto", "Inter", "Open Sans", "Montserrat"];
+export const FONT_OPTIONS = ["Roboto", "Inter", "Open Sans", "Montserrat"];
 const DESKTOP_SIZE_OPTIONS = ["960px", "1024px", "1200px", "1280px", "1440px"];
 const MOBILE_SIZE_OPTIONS = ["420px", "375px", "390px"];
 const LANGUAGE_OPTIONS = ["Tiếng Việt", "English"];
@@ -18,7 +19,12 @@ type SelectRowProps = {
   onChange: (value: string) => void;
 };
 
-function SelectRow({ label, options, value, onChange }: SelectRowProps) {
+const SelectRow: FC<SelectRowProps> = ({
+  label,
+  options,
+  value,
+  onChange,
+}: SelectRowProps) => {
   return (
     <FieldRow label={label}>
       <Select value={value} onChange={(event) => onChange(event.target.value)}>
@@ -30,9 +36,9 @@ function SelectRow({ label, options, value, onChange }: SelectRowProps) {
       </Select>
     </FieldRow>
   );
-}
+};
 
-export default function PageSettings() {
+export const PageSettings: FC = () => {
   const { settings, setSetting } = usePageSettings();
 
   return (
@@ -62,18 +68,24 @@ export default function PageSettings() {
       <SwitchToggle
         label="Mobile only"
         checked={settings.mobileOnly}
-        onChange={(event) => setSetting("mobileOnly", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("mobileOnly", event.target.checked)
+        }
       />
       <SwitchToggle
         label="Yêu cầu đăng nhập"
         checked={settings.requireLogin}
-        onChange={(event) => setSetting("requireLogin", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("requireLogin", event.target.checked)
+        }
       />
       <SwitchToggle
         label="Captcha"
         hint
         checked={settings.captcha}
-        onChange={(event) => setSetting("captcha", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("captcha", event.target.checked)
+        }
       />
 
       <SelectRow
@@ -99,8 +111,10 @@ export default function PageSettings() {
         label="Nội dung động"
         hint
         checked={settings.dynamicContent}
-        onChange={(event) => setSetting("dynamicContent", event.target.checked)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSetting("dynamicContent", event.target.checked)
+        }
       />
     </div>
   );
-}
+};

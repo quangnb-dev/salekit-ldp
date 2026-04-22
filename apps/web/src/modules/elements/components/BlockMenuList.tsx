@@ -1,5 +1,4 @@
-import { BlockToolbar, type SK_BlockType } from "@salekit/core";
-import { getToolbarConfig } from "@/modules/builder/blocks/toolbarConfigs";
+import type { FC } from "react";
 import { classNames } from "@/shared/lib/classNames";
 import type { BlockLibraryItem } from "../types/menu";
 
@@ -7,15 +6,13 @@ type BlockMenuListProps = {
   items: BlockLibraryItem[];
   selectedType: string | null;
   onSelectItem: (type: string) => void;
-  onAddItem: (type: string) => void;
 };
 
-export default function BlockMenuList({
+export const BlockMenuList: FC<BlockMenuListProps> = ({
   items,
   selectedType,
   onSelectItem,
-  onAddItem,
-}: BlockMenuListProps) {
+}: BlockMenuListProps) => {
   if (items.length === 0) {
     return (
       <div className="rounded-xl bg-white px-4 py-8 text-center text-sm text-slate-500">
@@ -30,57 +27,43 @@ export default function BlockMenuList({
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = selectedType === item.type;
-          const toolbarConfig = getToolbarConfig(item.type);
 
           return (
-            <BlockToolbar
+            <button
               key={item.type}
-              blockData={{
-                type: toolbarConfig.type as SK_BlockType,
-                cname: toolbarConfig.cname as SK_BlockType,
-                bpConfigs: toolbarConfig.bpConfigs as Record<string, unknown>,
-                configs: toolbarConfig.configs,
-                label: item.label,
-              }}
-              overlay={toolbarConfig.overlay}
+              type="button"
+              onClick={() => onSelectItem(item.type)}
               className={classNames(
                 "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
                 isActive ? "bg-slate-100" : "hover:bg-slate-50",
               )}
             >
-              <button
-                type="button"
-                style={{ display: "contents" }}
-                onClick={() => onSelectItem(item.type)}
-                onDoubleClick={() => onAddItem(item.type)}
-              >
-                <span className="flex min-w-0 items-center gap-2.5">
-                  <span
-                    className={classNames(
-                      "flex h-5 w-5 shrink-0 items-center justify-center transition-colors",
-                      isActive
-                        ? "text-indigo-600"
-                        : "text-slate-500 group-hover:text-indigo-500",
-                    )}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  <span
-                    className={classNames(
-                      "truncate text-[13px] font-medium transition-colors",
-                      isActive
-                        ? "text-slate-900"
-                        : "text-slate-700 group-hover:text-slate-900",
-                    )}
-                  >
-                    {item.label}
-                  </span>
+              <span className="flex min-w-0 items-center gap-2.5">
+                <span
+                  className={classNames(
+                    "flex h-5 w-5 shrink-0 items-center justify-center transition-colors",
+                    isActive
+                      ? "text-indigo-600"
+                      : "text-slate-500 group-hover:text-indigo-500",
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
                 </span>
-              </button>
-            </BlockToolbar>
+                <span
+                  className={classNames(
+                    "truncate text-[13px] font-medium transition-colors",
+                    isActive
+                      ? "text-slate-900"
+                      : "text-slate-700 group-hover:text-slate-900",
+                  )}
+                >
+                  {item.label}
+                </span>
+              </span>
+            </button>
           );
         })}
       </div>
     </div>
   );
-}
+};

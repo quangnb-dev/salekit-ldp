@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 import { classNames } from "@/shared/lib/classNames";
 
 type SwitchToggleProps = {
@@ -10,7 +10,7 @@ type SwitchToggleProps = {
   "checked" | "defaultChecked" | "onChange" | "disabled"
 >;
 
-export default function SwitchToggle({
+export const SwitchToggle: FC<SwitchToggleProps> = ({
   label,
   hint = false,
   className,
@@ -18,7 +18,7 @@ export default function SwitchToggle({
   defaultChecked,
   onChange,
   disabled = false,
-}: SwitchToggleProps) {
+}: SwitchToggleProps) => {
   return (
     <div
       className={classNames(
@@ -54,4 +54,4 @@ export default function SwitchToggle({
       </label>
     </div>
   );
-}
+};

@@ -1,7 +1,2 @@
-export { default as BlockLibraryPanel } from "./components/BlockLibraryPanel";
-export {
-  BLOCK_RENDERERS,
-  getRendererShellClassName,
-  resolveBlockRenderer,
-} from "./renderers";
+export { BlockLibraryPanel } from "./components/BlockLibraryPanel";
 export type { BlockLibraryTab } from "./types/tab";

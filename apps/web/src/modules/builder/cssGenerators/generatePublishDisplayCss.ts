@@ -1,5 +1,7 @@
-import type { Breakpoint, CSSProperties, SK_BlockData } from "@salekit/core";
-import { getResponsiveValue } from "@salekit/core";
+import type { SK_BlockData } from "@salekit/core";
+
+import type { Breakpoint, CSSProperties } from "../cssRuntime";
+import { getResponsiveValue } from "../cssRuntime";
 
 /**
  * Generate CSS for hiding blocks in editor but showing in publish mode

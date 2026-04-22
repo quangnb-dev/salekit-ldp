@@ -1,4 +1,5 @@
-export default function ButtonPreview() {
+import type { FC } from "react";
+export const ButtonPreview: FC = () => {
   return (
     <div className="space-y-3">
       <button
@@ -15,4 +16,4 @@ export default function ButtonPreview() {
       </button>
     </div>
   );
-}
+};

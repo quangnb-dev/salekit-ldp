@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import ColorPicker from "react-best-gradient-color-picker";
 import { createPortal } from "react-dom";
-import FieldRow from "@/shared/ui/FieldRow";
+import { FieldRow } from "@/shared/ui/FieldRow";
 import { Select } from "@/shared/ui/Input";
 import { usePageSettings } from "../hooks/usePageSettings";
-import MediaModal from "./MediaModal";
+import { MediaModal } from "./MediaModal";
 
 type BackgroundType = "color" | "image" | "video";
 
-const COLOR_POPUP_WIDTH = 272;
+export const COLOR_POPUP_WIDTH = 272;
 const COLOR_POPUP_FALLBACK_HEIGHT = 220;
 const COLOR_POPUP_GAP = 8;
 const VIEWPORT_MARGIN = 8;
 
-export default function PageSettingsBackgroundSection() {
+export const PageSettingsBackgroundSection: FC = () => {
   const { settings, setSetting } = usePageSettings();
   const [isColorPopupOpen, setIsColorPopupOpen] = useState(false);
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
@@ -226,4 +226,4 @@ export default function PageSettingsBackgroundSection() {
       )}
     </>
   );
-}
+};

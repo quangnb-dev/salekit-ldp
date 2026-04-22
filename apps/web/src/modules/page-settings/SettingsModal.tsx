@@ -1,15 +1,15 @@
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useBuilderEditor } from "@/modules/builder/editor";
-import ConversionCodeSettings from "./components/ConversionCodeSettings";
-import CustomCodeSettings from "./components/CustomCodeSettings";
-import GridSettings from "./components/GridSettings";
-import PageSettings from "./components/PageSettings";
-import SeoSocialSettings from "./components/SeoSocialSettings";
+import { ConversionCodeSettings } from "./components/ConversionCodeSettings";
+import { CustomCodeSettings } from "./components/CustomCodeSettings";
+import { GridSettings } from "./components/GridSettings";
+import { PageSettings } from "./components/PageSettings";
+import { SeoSocialSettings } from "./components/SeoSocialSettings";
 import { SETTINGS_ITEMS } from "./config/settingsItems";
 import type { SettingsItemId } from "./types/settings";
 
-const SETTINGS_CONTENT: Record<SettingsItemId, React.ComponentType> = {
+export const SETTINGS_CONTENT: Record<SettingsItemId, React.ComponentType> = {
   grid: GridSettings,
   "seo-social": SeoSocialSettings,
   "conversion-code": ConversionCodeSettings,
@@ -22,7 +22,10 @@ type SettingsModalProps = {
   onClose: () => void;
 };
 
-export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
+export const SettingsModal: FC<SettingsModalProps> = ({
+  itemId,
+  onClose,
+}: SettingsModalProps) => {
   const [activeTab, setActiveTab] = useState<SettingsItemId>(itemId);
   const { saveDocument } = useBuilderEditor();
 
@@ -116,4 +119,4 @@ export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
       </div>
     </div>
   );
-}
+};

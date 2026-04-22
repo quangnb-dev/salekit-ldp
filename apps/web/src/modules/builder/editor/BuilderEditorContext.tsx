@@ -1,6 +1,7 @@
 import { useBlockStore, useBuilderStore } from "@salekit/core";
 import {
   createContext,
+  type FC,
   type ReactNode,
   useCallback,
   useContext,
@@ -9,37 +10,21 @@ import {
   useRef,
   useState,
 } from "react";
-import { createSeedSnapshot } from "./seed";
-import {
-  clearEditorSnapshot,
-  loadEditorSnapshot,
-  saveEditorSnapshot,
-} from "./storage";
-import type { EditorContextValue, EditorSnapshot } from "./types";
+import { createBlankEditorSnapshot } from "./seed";
+import type { EditorContextValue } from "./types";
 
-const BuilderEditorContext = createContext<EditorContextValue | null>(null);
-
-const _cloneSnapshot = (snapshot: EditorSnapshot): EditorSnapshot =>
-  JSON.parse(JSON.stringify(snapshot)) as EditorSnapshot;
-
-const getCurrentSnapshot = (): EditorSnapshot => ({
-  blocks: useBlockStore.getState().blocks,
-  hierarchy: useBlockStore.getState().hierarchy,
-  popupBlocks: useBlockStore.getState().popupBlocks,
-  popupHierarchy: useBlockStore.getState().popupHierarchy,
-  currentDevice: useBuilderStore.getState().currentDevice,
-  selectedBlockId: useBuilderStore.getState().selectedBlockId,
-});
+export const BuilderEditorContext = createContext<EditorContextValue | null>(
+  null,
+);
 
 type BuilderEditorProviderProps = {
   children: ReactNode;
 };
 
-export function BuilderEditorProvider({
+export const BuilderEditorProvider: FC<BuilderEditorProviderProps> = ({
   children,
-}: BuilderEditorProviderProps) {
+}: BuilderEditorProviderProps) => {
   const [hydrated, setHydrated] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const hydratedRef = useRef(false);
 
@@ -48,13 +33,14 @@ export function BuilderEditorProvider({
       return;
     }
 
-    const storedSnapshot = loadEditorSnapshot();
-    const snapshot = storedSnapshot ?? createSeedSnapshot();
+    const snapshot = createBlankEditorSnapshot();
 
-    useBlockStore.getState().setBlocks(snapshot.blocks);
-    useBlockStore.getState().setHierarchy(snapshot.hierarchy);
-    useBlockStore.getState().setBlocks(snapshot.popupBlocks, true);
-    useBlockStore.getState().setHierarchy(snapshot.popupHierarchy, true);
+    useBlockStore.setState({
+      blocks: snapshot.blocks,
+      hierarchy: snapshot.hierarchy,
+      popupBlocks: snapshot.popupBlocks,
+      popupHierarchy: snapshot.popupHierarchy,
+    });
     useBuilderStore.getState().setCurrentDevice(snapshot.currentDevice);
     useBuilderStore.getState().selectBlockId(snapshot.selectedBlockId);
 
@@ -67,24 +53,19 @@ export function BuilderEditorProvider({
   }, []);
 
   const saveDocument = useCallback(() => {
-    setSaving(true);
-    try {
-      saveEditorSnapshot(getCurrentSnapshot());
-      setLastSavedAt(Date.now());
-    } finally {
-      setSaving(false);
-    }
+    setLastSavedAt(Date.now());
   }, []);
 
   const restoreDocument = useCallback(() => {
-    clearEditorSnapshot();
-    const seed = createSeedSnapshot();
-    useBlockStore.getState().setBlocks(seed.blocks);
-    useBlockStore.getState().setHierarchy(seed.hierarchy);
-    useBlockStore.getState().setBlocks(seed.popupBlocks, true);
-    useBlockStore.getState().setHierarchy(seed.popupHierarchy, true);
-    useBuilderStore.getState().setCurrentDevice(seed.currentDevice);
-    useBuilderStore.getState().selectBlockId(seed.selectedBlockId);
+    const blankSnapshot = createBlankEditorSnapshot();
+    useBlockStore.setState({
+      blocks: blankSnapshot.blocks,
+      hierarchy: blankSnapshot.hierarchy,
+      popupBlocks: blankSnapshot.popupBlocks,
+      popupHierarchy: blankSnapshot.popupHierarchy,
+    });
+    useBuilderStore.getState().setCurrentDevice(blankSnapshot.currentDevice);
+    useBuilderStore.getState().selectBlockId(blankSnapshot.selectedBlockId);
     setLastSavedAt(null);
   }, []);
 
@@ -99,7 +80,6 @@ export function BuilderEditorProvider({
   const value = useMemo<EditorContextValue>(
     () => ({
       hydrated,
-      saving,
       lastSavedAt,
       setSelectedBlockId,
       undo,
@@ -113,7 +93,6 @@ export function BuilderEditorProvider({
       redo,
       restoreDocument,
       saveDocument,
-      saving,
       setSelectedBlockId,
       undo,
     ],
@@ -124,7 +103,7 @@ export function BuilderEditorProvider({
       {children}
     </BuilderEditorContext.Provider>
   );
-}
+};
 
 export const useBuilderEditor = (): EditorContextValue => {
   const context = useContext(BuilderEditorContext);

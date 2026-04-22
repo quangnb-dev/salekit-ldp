@@ -1,9 +1,9 @@
-import type { Generator } from "@salekit/core";
+import type { Generator } from "../cssRuntime";
 import {
   generateAbsoluteBaseCss,
   generateBackgroundCss,
   generateTextCss,
-} from "@salekit/core";
+} from "../cssRuntime";
 
 export const textGenerators: Generator[] = [
   {

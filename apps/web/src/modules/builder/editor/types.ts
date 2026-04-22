@@ -51,7 +51,6 @@ export type DropPosition = {
 
 export type EditorContextValue = {
   hydrated: boolean;
-  saving: boolean;
   lastSavedAt: number | null;
   setSelectedBlockId: (blockId: string | null) => void;
   undo: () => void;

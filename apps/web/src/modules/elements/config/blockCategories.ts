@@ -38,30 +38,34 @@ export const NAV_ITEMS_MAP: Record<BlockLibraryCategoryId, BlockLibraryItem[]> =
     font: [],
   };
 
-export const LEFT_NAV_ITEMS: BlockLibraryNavItem[] = [
-  { id: "all", label: "Phần tử", icon: Grid2x2, group: "top" },
+export const ALL_NAV_ITEMS: BlockLibraryNavItem[] = [
+  { id: "all", label: "Phan tu", icon: Grid2x2, group: "top" },
   { id: "assets", label: "Assets", icon: FolderOpen, group: "top" },
   { id: "section", label: "Section", icon: LayoutTemplate, group: "top" },
   { id: "popup", label: "Popup", icon: PictureInPicture2, group: "top" },
   { id: "dropbox", label: "Dropbox", icon: Columns2, group: "top" },
-  { id: "product", label: "Sản phẩm", icon: ShoppingBag, group: "top" },
+  { id: "product", label: "San pham", icon: ShoppingBag, group: "top" },
   { id: "blog", label: "Blog", icon: Newspaper, group: "top" },
-  { id: "utility", label: "Tiện ích", icon: Puzzle, group: "bottom" },
+  { id: "utility", label: "Tien ich", icon: Puzzle, group: "bottom" },
   {
     id: "content",
-    label: "Quản lý nội dung",
+    label: "Quan ly noi dung",
     icon: FolderCog,
     group: "bottom",
   },
-  { id: "media", label: "Quản lý Media", icon: Image, group: "bottom" },
+  { id: "media", label: "Quan ly Media", icon: Image, group: "bottom" },
   {
     id: "document",
-    label: "Quản lý tài liệu",
+    label: "Quan ly tai lieu",
     icon: FileText,
     group: "bottom",
   },
-  { id: "font", label: "Quản lý Font", icon: AlignLeft, group: "bottom" },
+  { id: "font", label: "Quan ly Font", icon: AlignLeft, group: "bottom" },
 ];
+
+export const LEFT_NAV_ITEMS = ALL_NAV_ITEMS.filter(
+  (item) => (NAV_ITEMS_MAP[item.id] ?? []).length > 0,
+);
 
 export const TAB_TO_NAV: Record<BlockLibraryTab, BlockLibraryCategoryId> = {
   all: "all",

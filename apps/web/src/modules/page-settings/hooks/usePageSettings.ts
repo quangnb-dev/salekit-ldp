@@ -1,8 +1,8 @@
-import { useBlockStore } from "@salekit/core";
 import {
   DEFAULT_PAGE_SETTINGS,
   PAGE_BLOCK_ID,
-} from "@/modules/builder/editor/seed";
+  useBlockStore,
+} from "@salekit/core";
 import type { EditorPageSettings } from "@/modules/builder/editor/types";
 
 const normalizeSettings = (value: unknown): EditorPageSettings => ({

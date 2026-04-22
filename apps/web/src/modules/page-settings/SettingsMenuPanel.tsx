@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { type FC, useState } from "react";
 import { classNames } from "@/shared/lib/classNames";
-import MenuPanel from "@/shared/ui/MenuPanel";
-import PanelHeader from "@/shared/ui/PanelHeader";
+import { MenuPanel } from "@/shared/ui/MenuPanel";
+import { PanelHeader } from "@/shared/ui/PanelHeader";
 import { SETTINGS_ITEMS } from "./config/settingsItems";
 import type { SettingsItemId } from "./types/settings";
 
@@ -9,9 +9,9 @@ type SettingsMenuPanelProps = {
   onOpenModal: (itemId: SettingsItemId) => void;
 };
 
-export default function SettingsMenuPanel({
+export const SettingsMenuPanel: FC<SettingsMenuPanelProps> = ({
   onOpenModal,
-}: SettingsMenuPanelProps) {
+}: SettingsMenuPanelProps) => {
   const [activeItemId, setActiveItemId] = useState<SettingsItemId | null>(null);
 
   return (
@@ -58,4 +58,4 @@ export default function SettingsMenuPanel({
       </div>
     </MenuPanel>
   );
-}
+};

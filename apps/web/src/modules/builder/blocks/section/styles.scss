@@ -1,0 +1,41 @@
+.sk-section-inner {
+    position: relative;
+
+    &__outline {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        user-select: none;
+        border-left: 1px dashed red;
+        border-right: 1px dashed red;
+        z-index: 999;
+    }
+}
+
+.section-resize-handle {
+    position: absolute;
+    width: 40px;
+    height: 24px;
+    bottom: -12px;
+    left: calc(50% + 54px + 120px);
+    border-radius: 4px;
+    background-color: #6086f2;
+    border-width: 0px;
+    user-select: none;
+    z-index: 999;
+    cursor: ns-resize;
+    &:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        mask-image: url(data:image/svg+xml,%3Csvg%20fill%3D%22%23000000%22%20version%3D%221.1%22%20id%3D%22Capa_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%09%20width%3D%22800px%22%20height%3D%22800px%22%20viewBox%3D%220%200%20358.666%20358.666%22%0A%09%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cg%3E%0A%09%3Cg%3E%0A%09%09%3Cpolygon%20points%3D%22190.367%2C316.44%20190.367%2C42.226%20236.352%2C88.225%20251.958%2C72.619%20179.333%2C0%20106.714%2C72.613%20122.291%2C88.231%20%0A%09%09%09168.302%2C42.226%20168.302%2C316.44%20122.314%2C270.443%20106.708%2C286.044%20179.333%2C358.666%20251.958%2C286.056%20236.363%2C270.432%20%09%09%22%2F%3E%0A%09%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E);
+        mask-size: 100% 70%;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}

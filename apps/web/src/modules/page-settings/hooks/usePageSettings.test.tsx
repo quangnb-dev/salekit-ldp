@@ -1,11 +1,12 @@
 import { useBlockStore } from "@salekit/core";
 import { render, screen, waitFor } from "@testing-library/react";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BuilderEditorProvider } from "@/modules/builder/editor";
+import type { EditorPageSettings } from "@/modules/builder/editor/types";
 import { usePageSettings } from "./usePageSettings";
 
-function Probe() {
+const Probe: FC = () => {
   const { settings, setSetting } = usePageSettings();
 
   useEffect(() => {
@@ -14,7 +15,7 @@ function Probe() {
   }, [setSetting]);
 
   return <span>{settings.fontFamily}</span>;
-}
+};
 
 describe("usePageSettings", () => {
   beforeEach(() => {
@@ -35,12 +36,11 @@ describe("usePageSettings", () => {
     expect(await screen.findByText("Montserrat")).toBeTruthy();
 
     await waitFor(() => {
-      expect(
-        useBlockStore.getState().blocks.page?.configs?.pageSettings?.fontFamily,
-      ).toBe("Montserrat");
-      expect(
-        useBlockStore.getState().blocks.page?.configs?.pageSettings?.showGrid,
-      ).toBe(false);
+      const pageSettings = useBlockStore.getState().blocks.page?.configs
+        ?.pageSettings as Partial<EditorPageSettings> | undefined;
+
+      expect(pageSettings?.fontFamily).toBe("Montserrat");
+      expect(pageSettings?.showGrid).toBe(false);
     });
   });
 });

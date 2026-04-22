@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, FC } from "react";
 import { classNames } from "@/shared/lib/classNames";
 
 type ButtonProps = {
@@ -16,13 +16,13 @@ const variantClasses: Record<ButtonProps["variant"], string> = {
     "inline-flex h-9 items-center gap-1.5 rounded-lg bg-linear-to-r from-indigo-600 to-indigo-500 px-4 text-sm font-semibold text-white shadow-sm transition-all hover:from-indigo-700 hover:to-indigo-600 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 cursor-pointer",
 };
 
-export default function Button({
+export const Button: FC<ButtonProps> = ({
   variant,
   label,
   icon: Icon,
   onClick,
   className,
-}: ButtonProps) {
+}: ButtonProps) => {
   return (
     <button
       type="button"
@@ -33,4 +33,4 @@ export default function Button({
       {label}
     </button>
   );
-}
+};

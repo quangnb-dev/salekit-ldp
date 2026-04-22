@@ -1,4 +1,11 @@
-import { type CSSProperties, type FC, memo, useEffect, useRef } from "react";
+import {
+  type CSSProperties,
+  type FC,
+  memo,
+  type PropsWithChildren,
+  useEffect,
+  useRef,
+} from "react";
 
 import { SK_DATA_SET_ATTRS } from "../../configs/constants";
 import { useBlockClickable } from "../../hooks/useBlockClickable";
@@ -31,10 +38,11 @@ interface EditorProps {
   views: Record<string, React.ComponentType<Record<string, unknown>>>;
   rootId: string;
   pageWrapperStyle?: CSSProperties;
+  pageWrapperClass?: string;
 }
 
-export const Editor: FC<EditorProps> = memo(
-  ({ views, rootId, pageWrapperStyle }) => {
+export const Editor: FC<PropsWithChildren<EditorProps>> = memo(
+  ({ views, rootId, pageWrapperStyle, pageWrapperClass, children }) => {
     const browserWrapperRef = useRef<HTMLDivElement | null>(null);
     const pageWrapperRef = useRef<HTMLDivElement | null>(null);
     const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -52,20 +60,19 @@ export const Editor: FC<EditorProps> = memo(
       <div
         ref={browserWrapperRef}
         {...{ [SK_DATA_SET_ATTRS.BROWSER_WRAPPER]: "true" }}
-        style={{ position: "relative", width: "100%", height: "100%" }}
       >
         <div
           ref={pageWrapperRef}
           {...{ [SK_DATA_SET_ATTRS.PAGE_WRAPPER]: "true" }}
           style={{
-            position: "relative",
-            minHeight: "100vh",
             ...pageWrapperStyle,
           }}
+          className={pageWrapperClass}
         >
           <Blocks rootId={rootId} views={views} />
         </div>
         <BlockOverlay ref={overlayRef} />
+        {children}
       </div>
     );
   },

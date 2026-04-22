@@ -1,5 +1,5 @@
-import type { Generator } from "@salekit/core";
-import { generateAbsoluteBaseCss, generateBorderCss } from "@salekit/core";
+import type { Generator } from "../cssRuntime";
+import { generateAbsoluteBaseCss, generateBorderCss } from "../cssRuntime";
 
 export const imageGenerators: Generator[] = [
   {

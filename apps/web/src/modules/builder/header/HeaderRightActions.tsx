@@ -1,5 +1,6 @@
-import Button from "@/shared/ui/Button";
-import IconButton from "@/shared/ui/IconButton";
+import type { FC } from "react";
+import { Button } from "@/shared/ui/Button";
+import { IconButton } from "@/shared/ui/IconButton";
 import { RIGHT_HEADER_ACTIONS } from "./config/actions";
 
 type HeaderRightActionsProps = {
@@ -9,9 +10,9 @@ type HeaderRightActionsProps = {
 const leadingIconActions = RIGHT_HEADER_ACTIONS.slice(0, 2); // undo, redo
 const middleActions = RIGHT_HEADER_ACTIONS.slice(2, -1); // save, preview, publish
 
-export default function HeaderRightActions({
+export const HeaderRightActions: FC<HeaderRightActionsProps> = ({
   onAction,
-}: HeaderRightActionsProps) {
+}: HeaderRightActionsProps) => {
   return (
     <div className="flex items-center gap-2">
       {leadingIconActions.map(({ id, title, icon: Icon }) => (
@@ -55,4 +56,4 @@ export default function HeaderRightActions({
       </div>
     </div>
   );
-}
+};

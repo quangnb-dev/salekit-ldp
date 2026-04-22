@@ -1,10 +1,11 @@
+import type { FC } from "react";
 import type {
   BuilderMenuPanel,
   BuilderMenuView,
 } from "@/modules/builder/stores/builderStore";
 import { classNames } from "@/shared/lib/classNames";
-import Button from "@/shared/ui/Button";
-import IconButton from "@/shared/ui/IconButton";
+import { Button } from "@/shared/ui/Button";
+import { IconButton } from "@/shared/ui/IconButton";
 import { LEFT_HEADER_ACTIONS } from "./config/actions";
 
 type HeaderLeftActionsProps = {
@@ -12,10 +13,10 @@ type HeaderLeftActionsProps = {
   onToggle: (view: BuilderMenuPanel) => void;
 };
 
-export default function HeaderLeftActions({
+export const HeaderLeftActions: FC<HeaderLeftActionsProps> = ({
   activeView,
   onToggle,
-}: HeaderLeftActionsProps) {
+}: HeaderLeftActionsProps) => {
   return (
     <div className="ml-2 flex items-center gap-0.5">
       {LEFT_HEADER_ACTIONS.map(({ id, icon: Icon, title, variant }) => {
@@ -52,4 +53,4 @@ export default function HeaderLeftActions({
       })}
     </div>
   );
-}
+};

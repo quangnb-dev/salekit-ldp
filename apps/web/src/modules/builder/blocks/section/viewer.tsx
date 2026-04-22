@@ -1,35 +1,49 @@
 import type { SK_BlockViewer } from "@salekit/core";
-import { SK_DATA_SET_ATTRS } from "@salekit/core";
-import type { ReactNode } from "react";
+import { SK_BLOCK_CLASS, SK_DATA_SET_ATTRS } from "@salekit/core";
+import clsx from "clsx";
+import type { FC, PropsWithChildren } from "react";
+import "./styles.scss";
 
-type SectionViewerProps = SK_BlockViewer & {
-  children?: ReactNode;
-};
-
-/**
- * Section viewer component.
- * Renders a section with:
- * - Outer div: position: relative container with data-sk-id for CSS targeting
- * - Inner div: centered container with data-drop-inner for drop zone detection
- * Children are positioned absolutely within the inner div.
- */
-export default function SectionViewer({
-  autoId,
+export const SectionViewer: FC<PropsWithChildren<SK_BlockViewer>> = ({
   children,
-}: SectionViewerProps) {
+  autoId,
+  cname,
+  noClick,
+  // configs,
+}) => {
   return (
-    <div
-      className="section-outer"
-      {...{ [SK_DATA_SET_ATTRS.AUTO_ID]: autoId }}
-      style={{ position: "relative" }}
+    <section
+      {...{
+        [SK_DATA_SET_ATTRS.AUTO_ID]: autoId,
+        [SK_DATA_SET_ATTRS.CNAME]: cname,
+        [SK_DATA_SET_ATTRS.CLICKABLE]: "true",
+        [SK_DATA_SET_ATTRS.DROP]: true,
+      }}
+      className={clsx(
+        "animate__animated",
+        SK_BLOCK_CLASS.BLOCK_ROOT,
+        SK_BLOCK_CLASS.SECTION,
+      )}
     >
-      <div
-        className="section-inner"
-        {...{ [SK_DATA_SET_ATTRS.DROP_INNER]: "true" }}
-        style={{ margin: "0 auto" }}
-      >
-        {children}
-      </div>
-    </div>
+      {noClick ? (
+        children
+      ) : (
+        <div
+          {...{
+            [SK_DATA_SET_ATTRS.AUTO_ID_INNER]: autoId,
+            // [DATA_SET_ATK_ANIMATION_ID]: autoId,
+            [SK_DATA_SET_ATTRS.CNAME_INNER]: cname,
+            [SK_DATA_SET_ATTRS.DROP_INNER]: true,
+          }}
+          className="sk-section-inner"
+          style={{ height: "400px" }}
+        >
+          {children}
+
+          <div className="sk-section-inner__outline" />
+        </div>
+      )}
+      {<div className="section-resize-handle" />}
+    </section>
   );
-}
+};

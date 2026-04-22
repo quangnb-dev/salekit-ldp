@@ -1,4 +1,5 @@
 import type { SK_BlockDevice } from "@salekit/core";
+import type { FC } from "react";
 import { classNames } from "@/shared/lib/classNames";
 import { BREAKPOINT_OPTIONS } from "./config/breakpoints";
 
@@ -7,10 +8,10 @@ type HeaderBreakpointSwitchProps = {
   onChange: (breakpoint: SK_BlockDevice) => void;
 };
 
-export default function HeaderBreakpointSwitch({
+export const HeaderBreakpointSwitch: FC<HeaderBreakpointSwitchProps> = ({
   breakpoint,
   onChange,
-}: HeaderBreakpointSwitchProps) {
+}: HeaderBreakpointSwitchProps) => {
   return (
     <div className="inline-flex items-center gap-1 rounded-lg bg-slate-100 p-1">
       {BREAKPOINT_OPTIONS.map(({ id, label, icon: Icon }) => (
@@ -31,4 +32,4 @@ export default function HeaderBreakpointSwitch({
       ))}
     </div>
   );
-}
+};

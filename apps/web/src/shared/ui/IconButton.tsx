@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import { classNames } from "@/shared/lib/classNames";
 
 type IconButtonProps = {
@@ -8,12 +8,12 @@ type IconButtonProps = {
   onClick?: () => void;
 };
 
-export default function IconButton({
+export const IconButton: FC<IconButtonProps> = ({
   children,
   title,
   active = false,
   onClick,
-}: IconButtonProps) {
+}: IconButtonProps) => {
   return (
     <button
       type="button"
@@ -30,4 +30,4 @@ export default function IconButton({
       {children}
     </button>
   );
-}
+};

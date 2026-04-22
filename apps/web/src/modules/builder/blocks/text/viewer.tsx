@@ -1,4 +1,5 @@
 import { BlockViewer } from "@salekit/core";
+import type { FC } from "react";
 
 type TextViewerProps = {
   blockId: string;
@@ -14,12 +15,12 @@ type TextViewerProps = {
  * Wraps content in BlockViewer for selection/drag support.
  * Renders HTML content if contentType is "html", otherwise plain text.
  */
-export default function TextViewer({
+export const TextViewer: FC<TextViewerProps> = ({
   autoId,
   cname,
   label,
   configs,
-}: TextViewerProps) {
+}: TextViewerProps) => {
   const content =
     (configs?.content as string | undefined) ?? label ?? "Text block";
   const contentType = (configs?.contentType as string | undefined) ?? "html";
@@ -34,4 +35,4 @@ export default function TextViewer({
       )}
     </BlockViewer>
   );
-}
+};

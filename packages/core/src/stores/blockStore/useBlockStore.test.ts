@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { createBlankPageStructure } from "../../lib";
 import type { SK_BlockData } from "../../types";
 import { useBlockStore } from "./useBlockStore";
 
@@ -19,6 +20,7 @@ const createBlock = (id: string, type: SK_BlockData["type"]): SK_BlockData => ({
 const createDeepChain = (depth: number) => {
   const blocks: Record<string, SK_BlockData> = {
     page: createBlock("page", "page"),
+    b_0: createBlock("b_0", "section"),
   };
   const hierarchy: Record<string, string[]> = {
     page: depth > 0 ? ["b_0"] : [],
@@ -27,7 +29,8 @@ const createDeepChain = (depth: number) => {
   for (let i = 0; i < depth; i += 1) {
     const id = `b_${i}`;
     const nextId = i < depth - 1 ? `b_${i + 1}` : null;
-    blocks[id] = createBlock(id, "text");
+    blocks[id] =
+      i === 0 ? createBlock(id, "section") : createBlock(id, "group");
     hierarchy[id] = nextId ? [nextId] : [];
   }
 
@@ -48,21 +51,28 @@ describe("useBlockStore", () => {
 
   it("undo restores blocks/hierarchy after addBlock", () => {
     const pageBlock = createBlock("page", "page");
+    const sectionBlock = createBlock("section_root", "section");
     const textBlock = createBlock("b1", "text");
 
-    useBlockStore.getState().setBlocks({ page: pageBlock });
-    useBlockStore.getState().setHierarchy({ page: [] });
+    useBlockStore.getState().setBlocks({
+      page: pageBlock,
+      section_root: sectionBlock,
+    });
+    useBlockStore.getState().setHierarchy({
+      page: ["section_root"],
+      section_root: [],
+    });
     useBlockStore.temporal.getState().clear();
 
-    useBlockStore.getState().addBlock("b1", "page", textBlock);
+    useBlockStore.getState().addBlock("b1", "section_root", textBlock);
 
     expect(useBlockStore.getState().blocks.b1).toBeDefined();
-    expect(useBlockStore.getState().hierarchy.page).toEqual(["b1"]);
+    expect(useBlockStore.getState().hierarchy.section_root).toEqual(["b1"]);
 
     useBlockStore.temporal.getState().undo();
 
     expect(useBlockStore.getState().blocks.b1).toBeUndefined();
-    expect(useBlockStore.getState().hierarchy.page).toEqual([]);
+    expect(useBlockStore.getState().hierarchy.section_root).toEqual([]);
   });
 
   it("updateBlockMultipleProperty writes nested top/left values", () => {
@@ -144,7 +154,7 @@ describe("useBlockStore", () => {
 
   it("addBlock and removeBlock operate on popup maps in popup mode", () => {
     const popupRoot = createBlock("popup_root", "section");
-    const textBlock = createBlock("popup_text", "text");
+    const textBlock = createBlock("popup_text", "group");
     const nestedBlock = createBlock("popup_nested", "button");
 
     useBlockStore.getState().setBlocks({ popup_root: popupRoot }, true);
@@ -267,5 +277,51 @@ describe("useBlockStore", () => {
     const state = useBlockStore.getState();
     expect(state.blocks.dup_root).toBeDefined();
     expect(state.hierarchy.page).toEqual(["b_0", "dup_root"]);
+  });
+
+  it("createBlankPageStructure returns page with one empty section", () => {
+    const structure = createBlankPageStructure();
+    const pageBlock = structure.blocks.page;
+    const sectionBlock = structure.blocks["section-root"];
+
+    expect(Object.keys(structure.blocks)).toEqual(["page", "section-root"]);
+    expect(pageBlock?.type).toBe("page");
+    expect(sectionBlock?.type).toBe("section");
+    expect(structure.hierarchy.page).toEqual(["section-root"]);
+    expect(structure.hierarchy["section-root"]).toEqual([]);
+  });
+
+  it("rejects invalid direct content placement under page", () => {
+    const pageBlock = createBlock("page", "page");
+    const textBlock = createBlock("text_1", "text");
+
+    useBlockStore.getState().setBlocks({ page: pageBlock });
+    useBlockStore.getState().setHierarchy({ page: [] });
+
+    useBlockStore.getState().addBlock("text_1", "page", textBlock);
+
+    const state = useBlockStore.getState();
+    expect(state.blocks.text_1).toBeUndefined();
+    expect(state.hierarchy.page).toEqual([]);
+  });
+
+  it("rejects invalid hierarchy updates that bypass section contract", () => {
+    const blocks = {
+      page: createBlock("page", "page"),
+      section_1: createBlock("section_1", "section"),
+      text_1: createBlock("text_1", "text"),
+    };
+
+    useBlockStore.getState().setBlocks(blocks);
+    useBlockStore.getState().setHierarchy({
+      page: ["section_1"],
+      section_1: ["text_1"],
+      text_1: [],
+    });
+
+    useBlockStore.getState().updateHierarchy("page", ["text_1"]);
+
+    const state = useBlockStore.getState();
+    expect(state.hierarchy.page).toEqual(["section_1"]);
   });
 });
