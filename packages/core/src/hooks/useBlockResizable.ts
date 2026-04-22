@@ -6,6 +6,8 @@ export interface UseBlockResizableOptions {
   blockId?: string;
 }
 
-export const useBlockResizable = (options: UseBlockResizableOptions = {}): void => {
+export const useBlockResizable = (
+  options: UseBlockResizableOptions = {},
+): void => {
   void options;
 };

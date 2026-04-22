@@ -68,8 +68,7 @@ export const useCssPropertyStore = create<CssPropertyStore>((set) => ({
       };
     }),
 
-  resetProperties: () =>
-    set(createDefaultState()),
+  resetProperties: () => set(createDefaultState()),
 }));
 
 export const cssPropertySelectors = {

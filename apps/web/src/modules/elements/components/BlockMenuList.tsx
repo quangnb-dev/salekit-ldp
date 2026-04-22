@@ -1,3 +1,5 @@
+import { BlockToolbar, type SK_BlockType } from "@salekit/core";
+import { getToolbarConfig } from "@/modules/builder/blocks/toolbarConfigs";
 import { classNames } from "@/shared/lib/classNames";
 import type { BlockLibraryItem } from "../types/menu";
 
@@ -28,41 +30,54 @@ export default function BlockMenuList({
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = selectedType === item.type;
+          const toolbarConfig = getToolbarConfig(item.type);
 
           return (
-            <button
+            <BlockToolbar
               key={item.type}
-              type="button"
-              onClick={() => onSelectItem(item.type)}
-              onDoubleClick={() => onAddItem(item.type)}
+              blockData={{
+                type: toolbarConfig.type as SK_BlockType,
+                cname: toolbarConfig.cname as SK_BlockType,
+                bpConfigs: toolbarConfig.bpConfigs as Record<string, unknown>,
+                configs: toolbarConfig.configs,
+                label: item.label,
+              }}
+              overlay={toolbarConfig.overlay}
               className={classNames(
                 "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
                 isActive ? "bg-slate-100" : "hover:bg-slate-50",
               )}
             >
-              <span className="flex min-w-0 items-center gap-2.5">
-                <span
-                  className={classNames(
-                    "flex h-5 w-5 shrink-0 items-center justify-center transition-colors",
-                    isActive
-                      ? "text-indigo-600"
-                      : "text-slate-500 group-hover:text-indigo-500",
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
+              <button
+                type="button"
+                style={{ display: "contents" }}
+                onClick={() => onSelectItem(item.type)}
+                onDoubleClick={() => onAddItem(item.type)}
+              >
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <span
+                    className={classNames(
+                      "flex h-5 w-5 shrink-0 items-center justify-center transition-colors",
+                      isActive
+                        ? "text-indigo-600"
+                        : "text-slate-500 group-hover:text-indigo-500",
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span
+                    className={classNames(
+                      "truncate text-[13px] font-medium transition-colors",
+                      isActive
+                        ? "text-slate-900"
+                        : "text-slate-700 group-hover:text-slate-900",
+                    )}
+                  >
+                    {item.label}
+                  </span>
                 </span>
-                <span
-                  className={classNames(
-                    "truncate text-[13px] font-medium transition-colors",
-                    isActive
-                      ? "text-slate-900"
-                      : "text-slate-700 group-hover:text-slate-900",
-                  )}
-                >
-                  {item.label}
-                </span>
-              </span>
-            </button>
+              </button>
+            </BlockToolbar>
           );
         })}
       </div>

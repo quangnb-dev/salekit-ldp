@@ -23,30 +23,35 @@ export default function HeaderRightActions({
       <div className="mx-0.5 h-6 w-px bg-slate-200" />
 
       <div className="inline-flex items-center">
-        {middleActions.map(({ id, label, icon: Icon, variant, className }) => {
-          if (variant === "primary") {
+        {middleActions.map(
+          ({ id, title, label, icon: Icon, variant, className }) => {
+            const actionLabel = label ?? title;
+
+            if (variant === "primary") {
+              return (
+                <Button
+                  key={id}
+                  variant="primary"
+                  label={actionLabel}
+                  icon={Icon}
+                  onClick={() => onAction(id)}
+                />
+              );
+            }
+
+            // ghost
             return (
               <Button
                 key={id}
-                variant="primary"
-                label={label!}
+                variant="ghost"
+                label={actionLabel}
                 icon={Icon}
                 onClick={() => onAction(id)}
+                className={className}
               />
             );
-          }
-          // ghost
-          return (
-            <Button
-              key={id}
-              variant="ghost"
-              label={label!}
-              icon={Icon}
-              onClick={() => onAction(id)}
-              className={className}
-            />
-          );
-        })}
+          },
+        )}
       </div>
     </div>
   );

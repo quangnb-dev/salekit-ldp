@@ -4,8 +4,9 @@ import type {
   BlockTypeIdentifier,
 } from "./types";
 
-export const normalizeBlockType = (value: string | null | undefined): BlockTypeIdentifier =>
-  (value ?? "").trim().toLowerCase();
+export const normalizeBlockType = (
+  value: string | null | undefined,
+): BlockTypeIdentifier => (value ?? "").trim().toLowerCase();
 
 export const toReadableBlockLabel = (value: string): string =>
   value.replace(/-/g, " ").replace(/\b\w/g, (match) => match.toUpperCase());
@@ -19,15 +20,14 @@ export const getAllowedParentsForChild = (
     return [...byChildRule.allowedParents];
   }
 
-  const fromParentRules = Object.entries(config.byParent ?? {}).reduce<BlockTypeIdentifier[]>(
-    (acc, [parentType, rule]) => {
-      if (rule.allowedChildren?.includes(childType)) {
-        acc.push(parentType);
-      }
-      return acc;
-    },
-    [],
-  );
+  const fromParentRules = Object.entries(config.byParent ?? {}).reduce<
+    BlockTypeIdentifier[]
+  >((acc, [parentType, rule]) => {
+    if (rule.allowedChildren?.includes(childType)) {
+      acc.push(parentType);
+    }
+    return acc;
+  }, []);
 
   return fromParentRules;
 };
@@ -54,7 +54,10 @@ export const validateBlockPlacement = (
     };
   }
 
-  if (childRule?.allowedParents?.length && !childRule.allowedParents.includes(parentType)) {
+  if (
+    childRule?.allowedParents?.length &&
+    !childRule.allowedParents.includes(parentType)
+  ) {
     return {
       valid: false,
       reasonCode: "PARENT_NOT_ALLOWED_FOR_CHILD",
@@ -62,7 +65,10 @@ export const validateBlockPlacement = (
     };
   }
 
-  if (parentRule?.allowedChildren?.length && !parentRule.allowedChildren.includes(childType)) {
+  if (
+    parentRule?.allowedChildren?.length &&
+    !parentRule.allowedChildren.includes(childType)
+  ) {
     return {
       valid: false,
       reasonCode: "CHILD_DENIED_IN_PARENT",

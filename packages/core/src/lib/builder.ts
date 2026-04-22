@@ -1,17 +1,16 @@
 import { useSyncExternalStore } from "react";
 
 import { ABSOLUTE_POSITION_KEYS, createAbsoluteBpConfigs } from "../configs";
-import { SK_DATA_SET_ATTRS } from "../configs/constants";
 import { useBlockStore } from "../stores/blockStore";
 import { useBuilderStore } from "../stores/builderStore";
 import type { SK_BlockData, SK_BlockDevice, SK_BlockType } from "../types";
 import { generateId } from "../utils";
 import {
+  type CssPropertyDefinition,
   cssPropertyDefinitions as defaultCssPropertyDefinitions,
   getBlockSchema,
   getBlockSelector,
   isPropertyApplicable,
-  type CssPropertyDefinition,
 } from "./blockSchemas";
 
 type DeviceConfig = Record<string, unknown>;
@@ -55,9 +54,8 @@ export const createUniqueBlockId = (
   return nextId;
 };
 
-export const createDefaultSectionBlock = (
-  newSectionId: string,
-): SK_BlockData => createBlockData("section", newSectionId);
+export const createDefaultSectionBlock = (newSectionId: string): SK_BlockData =>
+  createBlockData("section", newSectionId);
 
 export const createDefaultPopupBlock = (newPopupId: string): SK_BlockData =>
   createBlockData("popup", newPopupId);
@@ -73,7 +71,9 @@ export const cloneBlockWithId = (
 
 export const applyPositionOffset = (blockData: SK_BlockData): void => {
   (["desktop", "tablet", "mobile"] as SK_BlockDevice[]).forEach((device) => {
-    const deviceConfig = blockData.bpConfigs[device] as DeviceConfig | undefined;
+    const deviceConfig = blockData.bpConfigs[device] as
+      | DeviceConfig
+      | undefined;
 
     if (!deviceConfig) {
       return;
@@ -150,7 +150,11 @@ const cssRuleFromValue = (
     return undefined;
   }
 
-  if (typeof value === "object" && value !== null && "val" in (value as object)) {
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    "val" in (value as object)
+  ) {
     const typed = value as { val?: string | number; unit?: string };
     if (typed.val === undefined || typed.val === null) return undefined;
     return `${property}: ${typed.val}${typed.unit ?? "px"};`;
@@ -172,7 +176,10 @@ const mergeConfigToCss = (
 
   Object.entries(config).forEach(([property, value]) => {
     const definition = definitions[property];
-    if (!definition || !isPropertyApplicable(definitions, property, blockType as never)) {
+    if (
+      !definition ||
+      !isPropertyApplicable(definitions, property, blockType as never)
+    ) {
       return;
     }
 
@@ -204,12 +211,15 @@ export const applyCSSVariablesToBlockViewer = (
     return;
   }
 
-  const definitions = options?.cssPropertyDefinitions ?? defaultCssPropertyDefinitions;
+  const definitions =
+    options?.cssPropertyDefinitions ?? defaultCssPropertyDefinitions;
   const currentDevice = useBuilderStore.getState().currentDevice;
   const cssRules: string[] = [];
 
   Object.values(blocks).forEach((block) => {
-    const bpConfig = (block.bpConfigs?.[currentDevice] ?? block.bpConfigs?.desktop ?? {}) as Record<string, unknown>;
+    const bpConfig = (block.bpConfigs?.[currentDevice] ??
+      block.bpConfigs?.desktop ??
+      {}) as Record<string, unknown>;
     const flattenedBpConfig: Record<string, unknown> = {};
     flattenConfig(bpConfig, flattenedBpConfig);
 
@@ -256,16 +266,22 @@ export const getBlockProperty = (
   device: SK_BlockDevice = useBuilderStore.getState().currentDevice,
   defaultValue?: unknown,
 ): unknown => {
-  const block = useBlockStore.getState().blocks[blockId] as SK_BlockData | undefined;
+  const block = useBlockStore.getState().blocks[blockId] as
+    | SK_BlockData
+    | undefined;
   if (!block) {
     return defaultValue;
   }
 
   if (property === "label" || property === "cname" || property === "type") {
-    return (block as unknown as Record<string, unknown>)[property] ?? defaultValue;
+    return (
+      (block as unknown as Record<string, unknown>)[property] ?? defaultValue
+    );
   }
 
-  const deviceConfig = (block.bpConfigs?.[device] ?? block.bpConfigs?.desktop ?? {}) as Record<string, unknown>;
+  const deviceConfig = (block.bpConfigs?.[device] ??
+    block.bpConfigs?.desktop ??
+    {}) as Record<string, unknown>;
   const flattened: Record<string, unknown> = {};
   flattenConfig(deviceConfig, flattened);
 

@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useBuilderEditor } from "@/modules/builder/editor";
 import ConversionCodeSettings from "./components/ConversionCodeSettings";
 import CustomCodeSettings from "./components/CustomCodeSettings";
 import GridSettings from "./components/GridSettings";
@@ -23,6 +24,7 @@ type SettingsModalProps = {
 
 export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState<SettingsItemId>(itemId);
+  const { saveDocument } = useBuilderEditor();
 
   useEffect(() => {
     setActiveTab(itemId);
@@ -40,19 +42,21 @@ export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
   const Content = SETTINGS_CONTENT[activeTab];
 
   return (
-    <div
-      className="fixed inset-0 z-100 flex items-center justify-center bg-slate-900/45 p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+      <button
+        type="button"
+        aria-label="Đóng modal"
+        className="absolute inset-0 bg-slate-900/45"
+        onClick={onClose}
+      />
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Thiết lập trang"
-        className="flex w-full max-w-2xl flex-col max-h-[90vh] rounded-2xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.3)]"
-        onClick={(event) => event.stopPropagation()}
+        className="relative z-10 flex w-full max-w-2xl flex-col max-h-[90vh] rounded-2xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.3)]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between  border-slate-100 px-5 py-4">
+        <div className="flex items-center justify-between border-slate-100 px-5 py-4">
           <p className="text-sm font-semibold text-slate-900">
             Thiết lập trang
           </p>
@@ -73,9 +77,9 @@ export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
               key={item.id}
               type="button"
               onClick={() => setActiveTab(item.id)}
-              className={`px-3 py-2.5 text-sm transition-colors cursor-pointer border-b-2 -mb-px ${
+              className={`cursor-pointer border-b-2 -mb-px px-3 py-2.5 text-sm transition-colors ${
                 activeTab === item.id
-                  ? "border-indigo-600 text-indigo-600 font-medium"
+                  ? "border-indigo-600 font-medium text-indigo-600"
                   : "border-transparent text-slate-500 hover:text-slate-700"
               }`}
             >
@@ -100,7 +104,10 @@ export default function SettingsModal({ itemId, onClose }: SettingsModalProps) {
           </button>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              saveDocument();
+              onClose();
+            }}
             className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
           >
             Lưu

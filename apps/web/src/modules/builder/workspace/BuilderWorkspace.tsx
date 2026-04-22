@@ -1,43 +1,24 @@
-import { classNames } from "@/shared/lib/classNames";
+import { DockingWrapper, useBuilderEditor } from "@/modules/builder/editor";
 
 export default function BuilderWorkspace() {
+  const { hydrated, saving, lastSavedAt } = useBuilderEditor();
+
   return (
-    <div className="flex-1 overflow-auto bg-slate-50 p-4">
-      <div
-        className={classNames(
-          "mx-auto rounded-md border border-slate-200 bg-white bg-[radial-gradient(circle,#e2e8f0_1px,transparent_1px)] bg-size-[16px_16px] transition-[max-width] duration-200 max-w-full",
-        )}
-        style={{ minHeight: "calc(100vh - 56px - 48px)" }}
-      >
-        <div className="flex flex-col items-center justify-center px-6 py-32">
-          <h1 className="text-center text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
-            Sáng tạo Landing Page
-            <br />
-            không giới hạn
-          </h1>
-          <p className="mt-6 max-w-xl text-center text-base text-slate-500">
-            Kéo thả, tinh chỉnh và xuất bản trang đích đẹp mắt chỉ trong vài
-            phút.
-            <br />
-            Mọi công cụ đều nằm trong tầm tay bạn.
-          </p>
-          <div className="mt-10 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => console.log("start design")}
-              className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
-            >
-              Bắt đầu thiết kế
-            </button>
-            <button
-              type="button"
-              onClick={() => console.log("view tutorial")}
-              className="rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
-            >
-              Xem hướng dẫn
-            </button>
-          </div>
-        </div>
+    <div className="relative flex-1 overflow-hidden bg-slate-50">
+      <DockingWrapper />
+
+      <div className="pointer-events-none absolute right-4 top-4 z-20 flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm backdrop-blur">
+        <span className={hydrated ? "text-emerald-600" : "text-amber-600"}>
+          {hydrated ? "Hydrated" : "Bootstrapping"}
+        </span>
+        <span className="h-1 w-1 rounded-full bg-slate-300" />
+        <span>
+          {saving
+            ? "Saving..."
+            : lastSavedAt
+              ? new Date(lastSavedAt).toLocaleTimeString()
+              : "Unsaved"}
+        </span>
       </div>
     </div>
   );

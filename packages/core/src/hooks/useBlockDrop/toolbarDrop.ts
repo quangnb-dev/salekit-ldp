@@ -1,6 +1,6 @@
-import { generateId } from "../../utils";
 import { useBlockStore } from "../../stores/blockStore";
 import type { SK_BlockData, SK_BlockDevice } from "../../types";
+import { generateId } from "../../utils";
 
 export interface ToolbarDropInput {
   parentElement: HTMLElement;
@@ -42,8 +42,12 @@ export const handleToolbarDrop = ({
     configs: {},
   };
 
-  useBlockStore.getState().addBlock(blockId, "page", blockData, undefined, undefined, false);
+  useBlockStore
+    .getState()
+    .addBlock(blockId, "page", blockData, undefined, undefined, false);
   useBlockStore.getState().updateBlockProperty(blockId, device, "top.val", top);
-  useBlockStore.getState().updateBlockProperty(blockId, device, "left.val", left);
+  useBlockStore
+    .getState()
+    .updateBlockProperty(blockId, device, "left.val", left);
   return blockId;
 };

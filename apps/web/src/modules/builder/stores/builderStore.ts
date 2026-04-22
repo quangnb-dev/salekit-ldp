@@ -1,6 +1,10 @@
+import {
+  type BuilderActions as CoreBuilderActions,
+  type BuilderState as CoreBuilderState,
+  useBuilderStore as useCoreBuilderStore,
+} from "@salekit/core";
 import { create } from "zustand";
 
-export type Breakpoint = "desktop" | "tablet" | "mobile";
 export type BuilderMenuView =
   | "closed"
   | "all"
@@ -10,30 +14,35 @@ export type BuilderMenuView =
   | "settings";
 export type BuilderMenuPanel = Exclude<BuilderMenuView, "closed">;
 
-type BuilderState = {
-  breakpoint: Breakpoint;
+type BuilderMenuState = {
   menuView: BuilderMenuView;
-  setBreakpoint: (breakpoint: Breakpoint) => void;
   openMenu: (view: BuilderMenuPanel) => void;
   closeMenu: () => void;
   toggleMenu: (view: BuilderMenuPanel) => void;
 };
 
-export const useBuilderStore = create<BuilderState>((set, get) => ({
-  breakpoint: "desktop",
+export const useBuilderMenuStore = create<BuilderMenuState>((set, get) => ({
   menuView: "closed",
-  setBreakpoint: (breakpoint) => set({ breakpoint }),
   openMenu: (menuView) => set({ menuView }),
   closeMenu: () => set({ menuView: "closed" }),
   toggleMenu: (menuView) =>
     set({ menuView: get().menuView === menuView ? "closed" : menuView }),
 }));
 
+export type BuilderState = CoreBuilderState & CoreBuilderActions;
+
+export const useBuilderStore = useCoreBuilderStore;
+
 export const builderSelectors = {
-  breakpoint: (state: BuilderState) => state.breakpoint,
-  menuView: (state: BuilderState) => state.menuView,
-  setBreakpoint: (state: BuilderState) => state.setBreakpoint,
-  openMenu: (state: BuilderState) => state.openMenu,
-  closeMenu: (state: BuilderState) => state.closeMenu,
-  toggleMenu: (state: BuilderState) => state.toggleMenu,
+  currentDevice: (state: CoreBuilderState) => state.currentDevice,
+  selectedBlockId: (state: CoreBuilderState) => state.selectedBlockId,
+  setCurrentDevice: (state: BuilderState) => state.setCurrentDevice,
+  selectBlockId: (state: BuilderState) => state.selectBlockId,
+};
+
+export const menuSelectors = {
+  menuView: (state: BuilderMenuState) => state.menuView,
+  openMenu: (state: BuilderMenuState) => state.openMenu,
+  closeMenu: (state: BuilderMenuState) => state.closeMenu,
+  toggleMenu: (state: BuilderMenuState) => state.toggleMenu,
 };

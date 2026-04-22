@@ -19,10 +19,12 @@ export const handleViewerDrop = ({
   const top = elementRect.top - parentRect.top + parentElement.scrollTop;
   const left = elementRect.left - parentRect.left + parentElement.scrollLeft;
 
-  useBlockStore.getState().updateBlockMultipleProperty(blockId, device, "_multiple_", {
-    "top.val": top,
-    "left.val": left,
-    "width.val": elementRect.width,
-    "height.val": elementRect.height,
-  });
+  useBlockStore
+    .getState()
+    .updateBlockMultipleProperty(blockId, device, "_multiple_", {
+      "top.val": top,
+      "left.val": left,
+      "width.val": elementRect.width,
+      "height.val": elementRect.height,
+    });
 };

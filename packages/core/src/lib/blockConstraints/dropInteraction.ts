@@ -1,5 +1,5 @@
-import type { SK_BlockData } from "../../types";
 import type { BlockOptionData } from "../../stores/blockStore";
+import type { SK_BlockData } from "../../types";
 
 const resolveCandidateBlockData = (
   blockId: string,
@@ -22,15 +22,36 @@ export const isOptionDataPlacementValid = (
   if (!optionData) return true;
 
   for (const childId of optionData.firstChildIds ?? []) {
-    const childData = resolveCandidateBlockData(childId, rootId, rootData, optionData, blocksData);
+    const childData = resolveCandidateBlockData(
+      childId,
+      rootId,
+      rootData,
+      optionData,
+      blocksData,
+    );
     if (childData && childData.id === rootData.id) return false;
   }
 
-  for (const [parentId, childIds] of Object.entries(optionData.childIds ?? {})) {
-    const parentData = resolveCandidateBlockData(parentId, rootId, rootData, optionData, blocksData);
+  for (const [parentId, childIds] of Object.entries(
+    optionData.childIds ?? {},
+  )) {
+    const parentData = resolveCandidateBlockData(
+      parentId,
+      rootId,
+      rootData,
+      optionData,
+      blocksData,
+    );
     for (const childId of childIds ?? []) {
-      const childData = resolveCandidateBlockData(childId, rootId, rootData, optionData, blocksData);
-      if (parentData && childData && parentData.id === childData.id) return false;
+      const childData = resolveCandidateBlockData(
+        childId,
+        rootId,
+        rootData,
+        optionData,
+        blocksData,
+      );
+      if (parentData && childData && parentData.id === childData.id)
+        return false;
     }
   }
 

@@ -26,7 +26,7 @@ export * from "./dock";
 export * from "./dropState";
 export * from "./edges";
 export * from "./gen";
+export * from "./grid";
 export * from "./guideline";
 export * from "./snap";
 export * from "./toggle";
-export * from "./grid";

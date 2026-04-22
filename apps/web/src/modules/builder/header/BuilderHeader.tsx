@@ -1,6 +1,17 @@
+import {
+  createAbsoluteBpConfigs,
+  createBlockData,
+  type SK_BlockType,
+  useBlockStore,
+} from "@salekit/core";
 import { useRef, useState } from "react";
+import { getToolbarConfig } from "@/modules/builder/blocks/toolbarConfigs";
+import { useBuilderEditor } from "@/modules/builder/editor";
+import { PAGE_BLOCK_ID } from "@/modules/builder/editor/seed";
 import {
   builderSelectors,
+  menuSelectors,
+  useBuilderMenuStore,
   useBuilderStore,
 } from "@/modules/builder/stores/builderStore";
 import type { BlockLibraryTab } from "@/modules/elements";
@@ -13,12 +24,13 @@ import HeaderLeftActions from "./HeaderLeftActions";
 import HeaderRightActions from "./HeaderRightActions";
 
 export default function BuilderHeader() {
-  const breakpoint = useBuilderStore(builderSelectors.breakpoint);
-  const setBreakpoint = useBuilderStore(builderSelectors.setBreakpoint);
-  const menuView = useBuilderStore(builderSelectors.menuView);
-  const openMenu = useBuilderStore(builderSelectors.openMenu);
-  const closeMenu = useBuilderStore(builderSelectors.closeMenu);
-  const toggleMenu = useBuilderStore(builderSelectors.toggleMenu);
+  const breakpoint = useBuilderStore(builderSelectors.currentDevice);
+  const setBreakpoint = useBuilderStore(builderSelectors.setCurrentDevice);
+  const menuView = useBuilderMenuStore(menuSelectors.menuView);
+  const openMenu = useBuilderMenuStore(menuSelectors.openMenu);
+  const closeMenu = useBuilderMenuStore(menuSelectors.closeMenu);
+  const toggleMenu = useBuilderMenuStore(menuSelectors.toggleMenu);
+  const { undo, redo, saveDocument } = useBuilderEditor();
   const [activeSettingsModal, setActiveSettingsModal] =
     useState<SettingsItemId | null>(null);
 
@@ -30,12 +42,52 @@ export default function BuilderHeader() {
     onDismiss: closeMenu,
   });
 
+  /** Double-click on a sidebar item adds the block to the canvas via the store directly. */
   const handleSelectBlock = (type: string) => {
-    console.log("add-block", type);
+    const config = getToolbarConfig(type);
+    const _device = useBuilderStore.getState().currentDevice;
+    const blockId = `block-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    const bpConfigs = {
+      desktop: {
+        ...createAbsoluteBpConfigs(40).desktop,
+        ...(config.bpConfigs as Record<string, unknown>).desktop,
+      },
+      tablet: {
+        ...createAbsoluteBpConfigs(40).tablet,
+        ...(config.bpConfigs as Record<string, unknown>).tablet,
+      },
+      mobile: {
+        ...createAbsoluteBpConfigs(40).mobile,
+        ...(config.bpConfigs as Record<string, unknown>).mobile,
+      },
+    };
+    const blockData = createBlockData(config.type as SK_BlockType, blockId, {
+      label: config.label,
+      bpConfigs,
+      configs: config.configs,
+    });
+    useBlockStore
+      .getState()
+      .addBlock(blockId, PAGE_BLOCK_ID, blockData, undefined, undefined, false);
+    useBuilderStore.getState().selectBlockId(blockId);
+    closeMenu();
   };
 
   const handleHeaderAction = (actionId: string) => {
-    console.log(actionId);
+    switch (actionId) {
+      case "undo":
+        undo();
+        break;
+      case "redo":
+        redo();
+        break;
+      case "save":
+        saveDocument();
+        break;
+      default:
+        console.log(actionId);
+        break;
+    }
   };
 
   const handleViewChange = (view: BlockLibraryTab) => {

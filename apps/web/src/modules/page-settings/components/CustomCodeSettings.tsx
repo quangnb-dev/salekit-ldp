@@ -1,13 +1,12 @@
-import { useState } from "react";
 import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-css";
-import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-css";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/theme-github";
+import { usePageSettings } from "../hooks/usePageSettings";
 
 export default function CustomCodeSettings() {
-  const [js, setJs] = useState("");
-  const [css, setCss] = useState("");
+  const { settings, setSetting } = usePageSettings();
 
   const editorProps = {
     width: "100%",
@@ -30,8 +29,8 @@ export default function CustomCodeSettings() {
           <AceEditor
             {...editorProps}
             mode="javascript"
-            value={js}
-            onChange={setJs}
+            value={settings.javascriptCode}
+            onChange={(value) => setSetting("javascriptCode", value)}
             placeholder="Javascript tùy chỉnh"
             name="custom-js-editor"
           />
@@ -44,8 +43,8 @@ export default function CustomCodeSettings() {
           <AceEditor
             {...editorProps}
             mode="css"
-            value={css}
-            onChange={setCss}
+            value={settings.cssCode}
+            onChange={(value) => setSetting("cssCode", value)}
             placeholder="CSS tùy chỉnh"
             name="custom-css-editor"
           />

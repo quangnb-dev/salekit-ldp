@@ -1,22 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ColorPicker from "react-best-gradient-color-picker";
 import { createPortal } from "react-dom";
 import FieldRow from "@/shared/ui/FieldRow";
 import { Select } from "@/shared/ui/Input";
+import { usePageSettings } from "../hooks/usePageSettings";
 import MediaModal from "./MediaModal";
 
 type BackgroundType = "color" | "image" | "video";
 
-const DEFAULT_BACKGROUND =
-  "linear-gradient(90deg, rgba(59,130,246,1) 0%, rgba(139,92,246,1) 100%)";
 const COLOR_POPUP_WIDTH = 272;
 const COLOR_POPUP_FALLBACK_HEIGHT = 220;
 const COLOR_POPUP_GAP = 8;
 const VIEWPORT_MARGIN = 8;
 
 export default function PageSettingsBackgroundSection() {
-  const [backgroundType, setBackgroundType] = useState<BackgroundType>("color");
-  const [backgroundColor, setBackgroundColor] = useState(DEFAULT_BACKGROUND);
+  const { settings, setSetting } = usePageSettings();
   const [isColorPopupOpen, setIsColorPopupOpen] = useState(false);
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [colorPopupPos, setColorPopupPos] = useState<{
@@ -28,14 +26,9 @@ export default function PageSettingsBackgroundSection() {
   const colorButtonRef = useRef<HTMLButtonElement>(null);
   const colorPopupRef = useRef<HTMLDivElement>(null);
 
-  const mediaButtonLabel =
-    backgroundType === "image" ? "Chọn ảnh" : "Chọn video";
-  const mediaPlaceholder =
-    backgroundType === "image"
-      ? "Nền đang sử dụng: Image"
-      : "Nền đang sử dụng: Video";
+  const backgroundType = settings.backgroundType;
 
-  const getColorPopupPosition = (popupHeight: number) => {
+  const getColorPopupPosition = useCallback((popupHeight: number) => {
     const anchor = colorButtonRef.current;
     if (!anchor) return null;
 
@@ -54,7 +47,7 @@ export default function PageSettingsBackgroundSection() {
     top = Math.max(VIEWPORT_MARGIN, top);
 
     return { top, left };
-  };
+  }, []);
 
   useEffect(() => {
     if (!isColorPopupOpen) return;
@@ -98,7 +91,7 @@ export default function PageSettingsBackgroundSection() {
       window.removeEventListener("resize", updateColorPopupPosition);
       window.removeEventListener("scroll", updateColorPopupPosition, true);
     };
-  }, [isColorPopupOpen]);
+  }, [isColorPopupOpen, getColorPopupPosition]);
 
   return (
     <>
@@ -110,7 +103,7 @@ export default function PageSettingsBackgroundSection() {
         <Select
           value={backgroundType}
           onChange={(event) =>
-            setBackgroundType(event.target.value as BackgroundType)
+            setSetting("backgroundType", event.target.value as BackgroundType)
           }
         >
           <option value="color">Color</option>
@@ -145,13 +138,18 @@ export default function PageSettingsBackgroundSection() {
               >
                 <span
                   className="h-5 w-5 shrink-0 rounded border border-slate-200"
-                  style={{ background: backgroundColor }}
+                  style={{ background: settings.backgroundColor }}
                 />
                 <span>Chọn màu</span>
               </button>
               <button
                 type="button"
-                onClick={() => setBackgroundColor(DEFAULT_BACKGROUND)}
+                onClick={() =>
+                  setSetting(
+                    "backgroundColor",
+                    "linear-gradient(90deg, rgba(15,118,110,1) 0%, rgba(59,130,246,1) 100%)",
+                  )
+                }
                 className="rounded-lg border border-slate-200 px-3 py-2 text-xs text-slate-600 transition-colors hover:bg-slate-50"
               >
                 Reset
@@ -167,9 +165,13 @@ export default function PageSettingsBackgroundSection() {
               onClick={() => setIsMediaModalOpen(true)}
               className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50"
             >
-              {mediaButtonLabel}
+              {backgroundType === "image" ? "Chọn ảnh" : "Chọn video"}
             </button>
-            <p className="text-xs text-slate-500">{mediaPlaceholder}</p>
+            <p className="text-xs text-slate-500">
+              {backgroundType === "image"
+                ? settings.backgroundImageUrl || "Nền đang sử dụng: Image"
+                : settings.backgroundVideoUrl || "Nền đang sử dụng: Video"}
+            </p>
           </div>
         </FieldRow>
       )}
@@ -199,8 +201,8 @@ export default function PageSettingsBackgroundSection() {
             </div>
             <div className="px-2 py-2">
               <ColorPicker
-                value={backgroundColor}
-                onChange={setBackgroundColor}
+                value={settings.backgroundColor}
+                onChange={(value) => setSetting("backgroundColor", value)}
                 disableDarkMode
                 hideInputs
                 hidePresets

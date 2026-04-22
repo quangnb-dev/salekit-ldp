@@ -16,16 +16,18 @@ export default function MediaModal({ onClose }: MediaModalProps) {
   }, [onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-200 flex items-center justify-center bg-slate-900/45 p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-200 flex items-center justify-center p-4">
+      <button
+        type="button"
+        aria-label="Đóng modal"
+        className="absolute inset-0 bg-slate-900/45"
+        onClick={onClose}
+      />
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Thư viện media"
-        className="flex w-full max-w-3xl flex-col max-h-[90vh] rounded-2xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.3)]"
-        onClick={(event) => event.stopPropagation()}
+        className="relative z-10 flex w-full max-w-3xl flex-col max-h-[90vh] rounded-2xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.3)]"
       >
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
           <p className="text-sm font-semibold text-slate-900">Thư viện media</p>

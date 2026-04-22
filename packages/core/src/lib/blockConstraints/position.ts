@@ -17,17 +17,19 @@ export const isAbsoluteLayoutBlock = (
     return false;
   }
 
-  return (["desktop", "tablet", "mobile"] as SK_BlockDevice[]).some((device) => {
-    const deviceConfig = blockData.bpConfigs[device] as
-      | Record<string, unknown>
-      | undefined;
-    if (!deviceConfig) {
-      return false;
-    }
+  return (["desktop", "tablet", "mobile"] as SK_BlockDevice[]).some(
+    (device) => {
+      const deviceConfig = blockData.bpConfigs[device] as
+        | Record<string, unknown>
+        | undefined;
+      if (!deviceConfig) {
+        return false;
+      }
 
-    const position = deviceConfig.position as { val?: unknown } | undefined;
-    return position?.val === "absolute";
-  });
+      const position = deviceConfig.position as { val?: unknown } | undefined;
+      return position?.val === "absolute";
+    },
+  );
 };
 
 export const hasAbsoluteTopLeftPosition = (

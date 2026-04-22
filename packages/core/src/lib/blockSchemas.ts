@@ -1,5 +1,10 @@
-import { SK_DATA_SET_ATTRS, createAbsoluteBpConfigs } from "../configs";
-import type { SK_BlockData, SK_BlockDevice, SK_BlockType, SK_Layout } from "../types";
+import { createAbsoluteBpConfigs, SK_DATA_SET_ATTRS } from "../configs";
+import type {
+  SK_BlockData,
+  SK_BlockDevice,
+  SK_BlockType,
+  SK_Layout,
+} from "../types";
 
 export interface SK_BlockSchema<T = Record<string, unknown>> {
   type: SK_BlockType;
@@ -82,7 +87,9 @@ export type CssPropertyValue =
   | Record<string, unknown>;
 
 export interface CssPropertyDefinition {
-  property: string | ((value: CssPropertyValue, key?: string) => string | undefined);
+  property:
+    | string
+    | ((value: CssPropertyValue, key?: string) => string | undefined);
   appliesTo?: SK_BlockType[];
   valueType?: string;
   inheritable?: boolean;
@@ -129,14 +136,33 @@ export const cssPropertyDefinitions: Record<string, CssPropertyDefinition> = {
   zIndex: { property: rawValue("z-index") },
   position: { property: rawValue("position") },
   background: { property: rawValue("background") },
+  backgroundColor: { property: rawValue("background-color") },
+  backgroundImage: { property: rawValue("background-image") },
+  backgroundGradient: { property: rawValue("background-image") },
+  backgroundSize: { property: rawValue("background-size") },
+  backgroundPosition: { property: rawValue("background-position") },
+  backgroundRepeat: { property: rawValue("background-repeat") },
   color: { property: rawValue("color") },
+  fontSize: { property: unitValue("font-size") },
   "font-size": { property: rawValue("font-size") },
+  fontWeight: { property: rawValue("font-weight") },
+  lineHeight: { property: unitValue("line-height") },
   textAlign: { property: rawValue("text-align") },
   fontFamily: { property: rawValue("font-family") },
   textTransform: { property: rawValue("text-transform") },
+  border: { property: rawValue("border") },
+  borderWidth: { property: unitValue("border-width") },
+  borderStyle: { property: rawValue("border-style") },
+  borderColor: { property: rawValue("border-color") },
+  borderRadius: { property: unitValue("border-radius") },
+  borderTop: { property: rawValue("border-top") },
+  borderRight: { property: rawValue("border-right") },
+  borderBottom: { property: rawValue("border-bottom") },
+  borderLeft: { property: rawValue("border-left") },
   width: { property: unitValue("width") },
   maxWidth: { property: unitValue("max-width") },
   height: { property: unitValue("height") },
+  innerWidth: { property: unitValue("width"), appliesTo: ["section"] },
   top: { property: unitValue("top") },
   left: { property: unitValue("left") },
   mt: { property: unitValue("margin-top") },

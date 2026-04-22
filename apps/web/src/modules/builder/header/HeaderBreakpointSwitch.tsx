@@ -1,10 +1,10 @@
-import type { Breakpoint } from "@/modules/builder/stores/builderStore";
+import type { SK_BlockDevice } from "@salekit/core";
 import { classNames } from "@/shared/lib/classNames";
 import { BREAKPOINT_OPTIONS } from "./config/breakpoints";
 
 type HeaderBreakpointSwitchProps = {
-  breakpoint: Breakpoint;
-  onChange: (breakpoint: Breakpoint) => void;
+  breakpoint: SK_BlockDevice;
+  onChange: (breakpoint: SK_BlockDevice) => void;
 };
 
 export default function HeaderBreakpointSwitch({

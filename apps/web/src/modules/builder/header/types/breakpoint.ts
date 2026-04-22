@@ -1,8 +1,8 @@
+import type { SK_BlockDevice } from "@salekit/core";
 import type { LucideIcon } from "lucide-react";
-import type { Breakpoint } from "@/modules/builder/stores/builderStore";
 
 export type BreakpointOption = {
-  id: Breakpoint;
+  id: SK_BlockDevice;
   label: string;
   icon: LucideIcon;
 };

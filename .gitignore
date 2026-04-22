@@ -11,3 +11,5 @@ apps/web/*.log
 .DS_Store
 .vscode/
 !.vscode/extensions.json
+.gitnexus
+.claude

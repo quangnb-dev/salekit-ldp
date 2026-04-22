@@ -1,7 +1,4 @@
-import type {
-  SK_BlockData,
-  SK_BlockStructure,
-} from "../../types";
+import type { SK_BlockData, SK_BlockStructure } from "../../types";
 import type { BlockState } from "./types";
 
 export type ConfigObject = Record<string, unknown>;
