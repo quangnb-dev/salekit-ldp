@@ -60,8 +60,12 @@ export const useBlockDragToolbar = ({
             String(event.client.y),
           );
 
+          useBuilderStore.getState().setIsBlockDragging(true);
           document.dispatchEvent(
             new CustomEvent(SK_CUSTOM_EVENTS.TOOLBAR_DRAG_START),
+          );
+          document.dispatchEvent(
+            new CustomEvent(SK_CUSTOM_EVENTS.BLOCK_DRAG_START),
           );
         },
         move: (event) => {
@@ -107,6 +111,13 @@ export const useBlockDragToolbar = ({
 
           target.removeAttribute(SK_DATA_SET_ATTRS.VIEWER_X);
           target.removeAttribute(SK_DATA_SET_ATTRS.VIEWER_Y);
+
+          window.requestAnimationFrame(() => {
+            useBuilderStore.getState().setIsBlockDragging(false);
+            document.dispatchEvent(
+              new CustomEvent(SK_CUSTOM_EVENTS.BLOCK_DRAG_END),
+            );
+          });
         },
       },
     });

@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import { SK_DATA_SET_ATTRS } from "../../configs/constants";
+import { EditorProvider } from "../../contexts";
 import { useBlockClickable } from "../../hooks/useBlockClickable";
 import { useBlockDragToolbar } from "../../hooks/useBlockDragToolbar";
 import { useBlockDragViewer } from "../../hooks/useBlockDragViewer";
@@ -57,23 +58,25 @@ export const Editor: FC<PropsWithChildren<EditorProps>> = memo(
     useBlockDrop({ pageWrapperRef, overlayRef });
 
     return (
-      <div
-        ref={browserWrapperRef}
-        {...{ [SK_DATA_SET_ATTRS.BROWSER_WRAPPER]: "true" }}
-      >
+      <EditorProvider browserWrapperRef={browserWrapperRef} rootId={rootId}>
         <div
-          ref={pageWrapperRef}
-          {...{ [SK_DATA_SET_ATTRS.PAGE_WRAPPER]: "true" }}
-          style={{
-            ...pageWrapperStyle,
-          }}
-          className={pageWrapperClass}
+          ref={browserWrapperRef}
+          {...{ [SK_DATA_SET_ATTRS.BROWSER_WRAPPER]: "true" }}
         >
-          <Blocks rootId={rootId} views={views} />
+          <div
+            ref={pageWrapperRef}
+            {...{ [SK_DATA_SET_ATTRS.PAGE_WRAPPER]: "true" }}
+            style={{
+              ...pageWrapperStyle,
+            }}
+            className={pageWrapperClass}
+          >
+            <Blocks rootId={rootId} views={views} />
+          </div>
+          <BlockOverlay ref={overlayRef} />
+          {children}
         </div>
-        <BlockOverlay ref={overlayRef} />
-        {children}
-      </div>
+      </EditorProvider>
     );
   },
 );

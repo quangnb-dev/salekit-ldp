@@ -1,7 +1,11 @@
 import interact from "interactjs";
 import { type RefObject, useEffect } from "react";
 
-import { SK_DATA_SET_ATTRS, SK_INTERACT_TARGET } from "../configs/constants";
+import {
+  SK_CUSTOM_EVENTS,
+  SK_DATA_SET_ATTRS,
+  SK_INTERACT_TARGET,
+} from "../configs/constants";
 import { useBlockStore } from "../stores/blockStore";
 import { useBuilderStore } from "../stores/builderStore";
 
@@ -36,6 +40,10 @@ export const useBlockDragViewer = ({
 
           target.style.zIndex = "9999";
           target.style.userSelect = "none";
+          useBuilderStore.getState().setIsBlockDragging(true);
+          document.dispatchEvent(
+            new CustomEvent(SK_CUSTOM_EVENTS.BLOCK_DRAG_START),
+          );
         },
         move: (event) => {
           const target = event.target as HTMLElement;
@@ -65,7 +73,8 @@ export const useBlockDragViewer = ({
           );
 
           const blockId = target.getAttribute(SK_DATA_SET_ATTRS.AUTO_ID);
-          const currentDevice = useBuilderStore.getState().currentDevice;
+          const builderStore = useBuilderStore.getState();
+          const currentDevice = builderStore.currentDevice;
 
           if (blockId) {
             // Commit the final position to the store.
@@ -80,6 +89,17 @@ export const useBlockDragViewer = ({
                   "left.val": String(Math.round(finalLeft)),
                 } as unknown as Record<string, unknown>,
               );
+
+            pageWrapper
+              .querySelectorAll(`[${SK_DATA_SET_ATTRS.SELECTED_BLOCK}="true"]`)
+              .forEach((element) => {
+                if (element !== target) {
+                  element.removeAttribute(SK_DATA_SET_ATTRS.SELECTED_BLOCK);
+                }
+              });
+
+            target.setAttribute(SK_DATA_SET_ATTRS.SELECTED_BLOCK, "true");
+            builderStore.selectBlockId(blockId);
           }
 
           // Clear inline overrides so the store-driven CSS takes over.
@@ -90,6 +110,13 @@ export const useBlockDragViewer = ({
 
           target.removeAttribute(SK_DATA_SET_ATTRS.VIEWER_X);
           target.removeAttribute(SK_DATA_SET_ATTRS.VIEWER_Y);
+
+          window.requestAnimationFrame(() => {
+            useBuilderStore.getState().setIsBlockDragging(false);
+            document.dispatchEvent(
+              new CustomEvent(SK_CUSTOM_EVENTS.BLOCK_DRAG_END),
+            );
+          });
         },
       },
     });

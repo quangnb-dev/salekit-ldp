@@ -13,3 +13,4 @@ apps/web/*.log
 !.vscode/extensions.json
 .gitnexus
 .claude
+openspec

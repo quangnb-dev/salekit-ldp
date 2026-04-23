@@ -73,4 +73,6 @@ export enum SK_INTERACT_TARGET {
 
 export enum SK_CUSTOM_EVENTS {
   TOOLBAR_DRAG_START = "toolbar-drag-start",
+  BLOCK_DRAG_START = "block-drag-start",
+  BLOCK_DRAG_END = "block-drag-end",
 }

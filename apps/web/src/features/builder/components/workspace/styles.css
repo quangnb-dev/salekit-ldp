@@ -1,0 +1,40 @@
+[data-sk-browser-wrapper="true"] {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  z-index: 0;
+  min-height: calc(100vh - 3.5rem);
+}
+
+[data-sk-page-wrapper="true"] {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  z-index: 0;
+}
+
+[data-sk-id="page"] {
+  display: flex;
+  min-height: calc(100vh - 60px);
+  flex-direction: column;
+  position: relative;
+  background: #fff;
+}
+
+[data-sk-id="page"]::after {
+  content: "";
+  display: inline-block;
+  min-height: 200px;
+  width: 100%;
+  flex: 1;
+
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'><path fill='white' d='M1,0H2V1H1V0ZM0,1H1V2H0V1Z'/><path fill='gray' d='M0,0H1V1H0V0ZM1,1H2V2H1V1Z'/></svg>");
+  background-size: 20px;
+  background-repeat: repeat;
+
+  opacity: 0.1;
+  pointer-events: none;
+}
